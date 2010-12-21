@@ -37,31 +37,31 @@ mkdir -p $INSTALL_DIR
 
 
 
-#Perl
-if [ ! -d $SRC_DIR/perl/ ]; then 
-	echo Extracting perl...
+# #Perl
+# if [ ! -d $SRC_DIR/perl/ ]; then 
+	# echo Extracting perl...
 	
-	mkdir -p $SRC_DIR/perl/
-	$TAR -C $SRC_DIR/perl/ -f $PKG_DIR/perl/perl.tar.bz2 > NUL
-fi
+	# mkdir -p $SRC_DIR/perl/
+	# $TAR -C $SRC_DIR/perl/ -f $PKG_DIR/perl/perl.tar.bz2 > NUL
+# fi
 
-#if [ ! -d $INT_DIR/perl/ ]; then 
-	echo Building perl...
+# #if [ ! -d $INT_DIR/perl/ ]; then 
+	# echo Building perl...
 	
-	mkdir -p $INT_DIR/perl/
-	cd $INT_DIR/perl/
+	# mkdir -p $INT_DIR/perl/
+	# cd $INT_DIR/perl/
 
-	#Copy over the source since it needs to be built in the same 
-	#directory as the source or it won't compile. Copying it helps 
-	#ensure that we don't muddy the original source.
-	if [ ! -f $INT_DIR/perl/build ]; then 
-		echo Copying from source...
-		cp -p $SRC_DIR/perl/* .
-	fi
+	# #Copy over the source since it needs to be built in the same 
+	# #directory as the source or it won't compile. Copying it helps 
+	# #ensure that we don't muddy the original source.
+	# if [ ! -f $INT_DIR/perl/build ]; then 
+		# echo Copying from source...
+		# cp -p $SRC_DIR/perl/* .
+	# fi
 
 	
-	#./build all
-	cc=gcc ld=gcc ./build all
-#fi
+	# #./build all
+	# cc=gcc ld=gcc ./build all
+# #fi
 
   
