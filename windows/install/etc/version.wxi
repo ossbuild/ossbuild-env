@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	
+	<?define OSSBUILD_VERSION="1.0.0" ?>
+
+	
+	<?define PYTHON_VERSION="3.1" ?>
+	<?define PYTHON_VERSION_NAME="31" ?>
+	
+	<?define PYTHON_VERSION_FULL="$(var.PYTHON_VERSION).0.0" ?>
+	<?define OSSBUILD_VERSION_FULL="$(var.OSSBUILD_VERSION).0" ?>
+	
+</Include>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include etc\properties.wxi ?>
+
+<?define INSTALLED_PRODUCT_NAME="OSSBuild Build Environment v$(var.OSSBUILD_VERSION)" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:OSSBuild="$(ossbuild.namespaceURI())">
+	<Bundle 
+	  Name="$(var.INSTALLED_PRODUCT_NAME)" 
+	  Version="$(var.OSSBUILD_VERSION_FULL)" 
+	  Copyright="$(var.COPYRIGHT)" 
+	  Compressed="yes" 
+	  UpgradeCode="$(var.GUID_OSSBUILD_BUILD_ENV_BUNDLE_UPGRADE_CODE)" 
+	  Manufacturer="$(var.MANUFACTURER)" 
+	  IconSourceFile="$(var.OSSBUILD_ICON)" 
+	  SplashScreenSourceFile="$(var.OSSBUILD_SPLASH)"
+	>
+		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
+
+		<WixVariable Id="WixStdbaLogo" Value="$(var.OSSBUILD_LOGO)" />
+		<WixVariable Id="WixStdbaLicenseRtf" Value="$(var.LICENSE_LGPL)" />
+		<WixVariable Id="WixStdbaLicenseUrl" Value="$(var.LICENSE_URL_LGPL)" />
+
+		<Chain>
+			<!-- Python -->
+			<!-- <MsiPackage Id="Python" SourceFile="..\installers\python.msi" Vital="yes" Compressed="yes" /> -->
+
+			<!-- Msys, MinGW, etc. -->
+			<!-- <MsiPackage Id="Env" SourceFile="bin\$(var.Configuration)\en-us\env.msi" Vital="yes" Compressed="yes" /> -->
+
+			<!-- Note: The following PackageGroupRef is required to pull in generated authoring from project references. -->
+			<!-- <PackageGroupRef Id="Bundle.Generated.Packages"/> -->
+		</Chain>
+	</Bundle>
+</Wix>

@@ -594,6 +594,9 @@ if "%UNTAR%" == "1" (
 		copy /Y "%PACKAGESDIR%\msys\msys-x86_64.bat" "%MSYSDIR%\msys-x86_64.bat"
 	)
 	
+	REM Copy our updated batch file that allows for whitespace in the path.
+	copy /Y "%PACKAGESDIR%\msys\msys.bat" "%MSYSDIR%\msys.bat"
+	
 	cd /d "%MSYSDIR%"
 )
 

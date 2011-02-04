@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	This is used primarily to detect if python is installed on the system and 
+	if it is, to add it to the system path since the python installer itself 
+	doesn't do that.
+	
+	We search the Win32 and Win64 registry hives for an installation path. 
+	If we find it, we set the PYTHONINSTALLDIR variable. If it's not found, 
+	then the variable is empty (null).
+-->
+
+<?include properties.wxi ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<ComponentGroup Id="PythonCheck">
+			<ComponentRef Id="PythonPath" />
+		</ComponentGroup>
+
+		<!-- Attempt to locate a python installation -->
+		<Property Id="REGISTRY_PYTHON_INSTALL_DIR_WIN32">
+			<RegistrySearch Id="RegPythonInstallDirSearchWin32" Root="HKLM" Key="SOFTWARE\Python\PythonCore\$(var.PYTHON_VERSION)\InstallPath" Type="raw" Win64="no" />
+		</Property>
+
+		<Property Id="REGISTRY_PYTHON_INSTALL_DIR_WIN64">
+			<RegistrySearch Id="RegPythonInstallDirSearchWin64" Root="HKLM" Key="SOFTWARE\Python\PythonCore\$(var.PYTHON_VERSION)\InstallPath" Type="raw" Win64="yes" />
+		</Property>
+
+		<!-- Initialize w/ a typical python install dir -->
+		<!-- <CustomAction Id="SetPythonInstallDir" Property="PYTHONINSTALLDIR" Execute="firstSequence" Value="[WindowsVolume]$(var.PYTHON_VERSION_NAME)" /> -->
+		<CustomAction Id="SetPythonInstallDirFromRegistryWin32" Property="PYTHONINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_PYTHON_INSTALL_DIR_WIN32]" />
+		<CustomAction Id="SetPythonInstallDirFromRegistryWin64" Property="PYTHONINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_PYTHON_INSTALL_DIR_WIN64]" />
+
+		<!--
+		TODO: Test that this works in a commandline install
+		<InstallExecuteSequence>
+			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetPythonInstallDirFromRegistryWin64" />
+			<Custom Action="SetPythonInstallDirFromRegistryWin64" Before="CostInitialize"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+		</InstallExecuteSequence>
+		-->
+
+		<InstallUISequence>
+			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetPythonInstallDirFromRegistryWin64" />
+			<Custom Action="SetPythonInstallDirFromRegistryWin64" Before="CostInitialize"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+		</InstallUISequence>
+
+		<DirectoryRef Id="TARGETDIR">
+			<!-- Add python to the system path ONLY if it's already installed. It should have been installed by the bootstrapper already. -->
+			<Component Id="PythonPath" Guid="{3FCC5EBA-F7B9-4465-814A-47BDCFE63B8F}">
+				<Condition><![CDATA[PYTHONINSTALLDIR]]></Condition>
+				
+				<Environment Id="PythonPath" Action="set" Part="first" Name="PATH" Permanent="no" System="yes" Value="[PYTHONINSTALLDIR]" />
+				<Environment Id="PythonDir" Action="set" Part="first" Name="PYTHON_DIR" Permanent="no" System="yes" Value="[PYTHONINSTALLDIR]" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

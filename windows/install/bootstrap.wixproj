@@ -5,7 +5,7 @@
     <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{5873357b-2843-4ee8-a1f2-16257d6a44f2}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>bootstrap</OutputName>
+    <OutputName>ossbuild-env</OutputName>
     <OutputType>Bundle</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -18,15 +18,34 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bundle.wxs" />
+    <Compile Include="bootstrap.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="OSSBuildExtensions">
+      <HintPath>..\..\shared\wix\OSSBuildExtensions.dll</HintPath>
+      <Name>OSSBuildExtensions</Name>
+    </WixExtension>
     <WixExtension Include="WixBalExtension">
       <HintPath>$(WixExtDir)\WixBalExtension.dll</HintPath>
       <Name>WixBalExtension</Name>
     </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="etc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="etc\guids.wxi">
+      <Link>etc\guids.wxi</Link>
+    </Content>
+    <Content Include="etc\properties.wxi">
+      <Link>etc\properties.wxi</Link>
+    </Content>
+    <Content Include="etc\version.wxi">
+      <Link>etc\version.wxi</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
