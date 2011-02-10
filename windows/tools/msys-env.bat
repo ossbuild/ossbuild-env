@@ -112,7 +112,7 @@ set PKG_TDM_GCC_MINGW64_MINGWRT_RUNTIME=http://downloads.sourceforge.net/project
 set PKG_TDM_GCC_MINGW64_CPP_BIN=http://downloads.sourceforge.net/project/tdm-gcc/TDM-GCC 4.5 series/4.5.0-tdm64-1/gcc-4.5.0-tdm64-1-c++.tar.lzma?use_mirror=voxel
 set PKG_TDM_GCC_MINGW64_OBJC_BIN=http://downloads.sourceforge.net/project/tdm-gcc/TDM-GCC 4.5 series/4.5.0-tdm64-1/gcc-4.5.0-tdm64-1-objc.tar.lzma?use_mirror=voxel
 
-set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.3.1-preview20101002.7z
+set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.4-preview20110204.7z
 
 set PKG_ACTIVESTATE_PERL_DIR=ActivePerl-5.12.2.1203-MSWin32-x86-294165
 set PKG_ACTIVESTATE_PERL_BIN=http://downloads.activestate.com/ActivePerl/releases/5.12.2.1203/ActivePerl-5.12.2.1203-MSWin32-x86-294165.zip
@@ -562,6 +562,17 @@ if "%UNTAR%" == "1" (
 	REM copy "%TMPDIR%\dxva2api.h" "%MINGWDIR%\x86_64-w64-mingw32\include\dxva2api.h"
 	
 	rem .zip requires custom handling
+	
+	echo Extracting cmake...
+	7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\cmake\cmake.zip" > nul 2>&1
+	
+	echo Extracting dmake...
+	7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\dmake\dmake.zip" > nul 2>&1
+	
+	echo Extracting perl...
+	7za -y "-o%MINGWDIR%\perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
+	move "%MSYSDIR%\bin\perl.exe" "%MSYSDIR%\bin\perl-msys.exe" > nul 2>&1
+	
 	echo Extracting mingw-glib-dll...
 	move mingw-glib-dll.tar.lzma mingw-glib-dll.zip > nul 2>&1
 	7za -y "-o%MINGWDIR%" x mingw-glib-dll.zip > nul 2>&1

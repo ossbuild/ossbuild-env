@@ -8,10 +8,7 @@ that they are accessible through most firewalls.
 LGPL Packages
 -------------------------------------
 
-perl                    -       5.10.1-4        -       http://mirror.calvin.edu/cygwin/release/perl/perl-5.10.1-4-src.tar.bz2
-perl-libwin32           -       0.28-3          -       http://mirror.calvin.edu/cygwin/release/perl/perl-libwin32/perl-libwin32-0.28-3-src.tar.bz2
-perl-win32-gui          -       1.06-3          -       http://mirror.calvin.edu/cygwin/release/perl/perl-Win32-GUI/perl-Win32-GUI-1.06-3-src.tar.bz2
-perl-xml-simple         -       2.18-10         -       http://mirror.calvin.edu/cygwin/release/perl/perl-XML-Simple/perl-XML-Simple-2.18-10-src.tar.bz2
+perl                    -       5.12.2.0        -       http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 
 
 

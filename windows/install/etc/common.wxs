@@ -29,6 +29,12 @@
 			<ComponentRef Id="OSSBuildInstallRegistryWin32" />
 			<ComponentRef Id="OSSBuildInstallRegistryWin64" />
 			<ComponentRef Id="OSSBuildEnvironmentVariables" />
+
+			<ComponentRef Id="OSSBuildInstallSDKDirCreate" />
+			<ComponentRef Id="OSSBuildInstallMainDirCreate" />
+			<ComponentRef Id="OSSBuildInstallBuildDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPackagesDirCreate" />
+			<ComponentRef Id="OSSBuildInstallEnvironmentDirCreate" />
 		</ComponentGroup>
 
 		<Condition Message="This application is only supported on Windows XP, Windows Vista, Windows 7, or higher.">
@@ -73,7 +79,7 @@
 		</Property>
 
 		<!-- Initialize w/ the typical install dir -->
-		<CustomAction Id="SetOSSBuildInstallDir" Property="INSTALLDIR" Execute="firstSequence" Value="[ProgramFilesFolder]$(var.COMPANY_DIR_NAME)" />
+		<CustomAction Id="SetOSSBuildInstallDir" Property="INSTALLDIR" Execute="firstSequence" Value="[WindowsVolume]$(var.COMPANY_DIR_NAME)" />
 		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin32" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN32]" />
 		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin64" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN64]" />
 
@@ -94,29 +100,11 @@
 			<Custom Action="SetWixUIInstallDir" Before="CostInitialize" />
 		</InstallUISequence>
 
-		<!-- 
-		<CustomAction Id="PreventDowngrading" Error="!(loc.NewerVersionFound)" />
-		<Property Id="OLDER_VERSION_BEING_UPGRADED" Secure="yes" />
-		<Upgrade Id="$(var.GUID_OSSBUILD_BUILD_ENV_UPGRADE_CODE)">
-			<UpgradeVersion Language="$(var.CURRENT_LANGUAGE)" Minimum="$(var.OSSBUILD_VERSION)" IncludeMinimum="no" OnlyDetect="no" Property="NEWER_VERSION_DETECTED" />
-			<UpgradeVersion Language="$(var.CURRENT_LANGUAGE)" Minimum="0.0.0" Maximum="$(var.OSSBUILD_VERSION)" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDER_VERSION_BEING_UPGRADED" />
-		</Upgrade>
-
-		<InstallExecuteSequence>
-			<Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWER_VERSION_DETECTED</Custom>
-			<RemoveExistingProducts After="InstallInitialize" />
-		</InstallExecuteSequence>
-
-		<InstallUISequence>
-			<Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWER_VERSION_DETECTED</Custom>
-		</InstallUISequence>
-		-->
-
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder" Name="PFiles">
 				<Directory Id="INSTALLDIR" Name=".">
 					
-					<!-- C:\Program Files\OSSBuild\ -->
+					<!-- C:\OSSBuild\ -->
 					<Directory Id="OSSBuildInstallDir" Name=".">
 						<Directory Id="OSSBUILD_INSTALL_DIR" Name=".">
 
@@ -144,6 +132,46 @@
 								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
 								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
 							</Component>
+
+							<!-- C:\OSSBuild\SDK\ -->
+							<Directory Id="OSSBuildInstallSDKDir" Name="SDK">
+								<Component Id="OSSBuildInstallSDKDirCreate" Guid="{B07E9DD0-2D01-4e51-B75C-4C652A25E133}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallSDKDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Main\ -->
+							<Directory Id="OSSBuildInstallMainDir" Name="Main">
+								<Component Id="OSSBuildInstallMainDirCreate" Guid="{1C1676BF-8A4C-45a9-BFBE-94011E084ADC}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallMainDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Build\ -->
+							<Directory Id="OSSBuildInstallBuildDir" Name="Build">
+								<Component Id="OSSBuildInstallBuildDirCreate" Guid="{F9867E17-8FBE-45c5-9E34-134C8C317289}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallBuildDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Packages\ -->
+							<Directory Id="OSSBuildInstallPackagesDir" Name="Packages">
+								<Component Id="OSSBuildInstallPackagesDirCreate" Guid="{D7A978DC-CFC2-4062-AB5D-982F9774F814}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallPackagesDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Environment\ -->
+							<Directory Id="OSSBuildInstallEnvironmentDir" Name="Environment">
+								<Component Id="OSSBuildInstallEnvironmentDirCreate" Guid="{3BFD8732-4C11-495c-87B5-D17094440B4C}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallEnvironmentDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
 							
 						</Directory>
 					</Directory>

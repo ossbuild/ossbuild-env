@@ -8,9 +8,11 @@ REM **********************************************************************
 set DIR=%~dp0.
 set CURRDIR=%CD%
 set MSYSDIR=%DIR%
-set MINGWDIR=%MSYSDIR%\mingw-x86
+set MINGWDIR=%MSYSDIR%\mingw
+set PERLDIR=%MINGWDIR%\perl\perl
+set MINGWARCHDIR=%MSYSDIR%\mingw-x86
 
-set PATH=%PATH%;%MINGWDIR%\bin
+set PATH=%PATH%;%MINGWARCHDIR%\bin;%PERLDIR%\bin
 
 cd /d "%DIR%"
 msys.bat
