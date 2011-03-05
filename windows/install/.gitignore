@@ -1,6 +1,7 @@
 !.gitignore
 bin/
 obj/
+cache/
 *.suo
 *.user
 install.log

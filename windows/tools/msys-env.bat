@@ -190,8 +190,13 @@ set PKG_MINGW_BASICBSDTAR_BIN=http://downloads.sourceforge.net/project/mingw/Min
 set PKG_MINGW_AUTOCONF_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/autoconf/autoconf2.5/autoconf2.5-2.67-1/autoconf2.5-2.67-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_AUTOCONFWRAPPER_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/autoconf/wrapper/autoconf-9-1/autoconf-9-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_AUTOMAKE_1_4_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.4/automake1.4-1.4p6-1/automake1.4-1.4p6-1-mingw32-bin.tar.lzma/download
+set PKG_MINGW_AUTOMAKE_1_5_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.5/automake1.5-1.5-1/automake1.5-1.5-1-mingw32-bin.tar.lzma/download
+set PKG_MINGW_AUTOMAKE_1_6_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.6/automake1.6-1.6.3-1/automake1.6-1.6.3-1-mingw32-bin.tar.lzma/download
+set PKG_MINGW_AUTOMAKE_1_7_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.7/automake1.7-1.7.9-1/automake1.7-1.7.9-1-mingw32-bin.tar.lzma/download
 set PKG_MINGW_AUTOMAKE_1_8_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/automake/automake1.8/automake1.8-1.8.5-1/automake1.8-1.8.5-1-mingw32-bin.tar.lzma?use_mirror=voxel
+set PKG_MINGW_AUTOMAKE_1_9_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.9/automake1.9-1.9.6-3/automake1.9-1.9.6-3-mingw32-bin.tar.lzma/download
 set PKG_MINGW_AUTOMAKE_1_10_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/automake/automake1.10/automake1.10-1.10.2-1/automake1.10-1.10.2-1-mingw32-bin.tar.lzma?use_mirror=voxel
+set PKG_MINGW_AUTOMAKE_1_11_BIN=http://sourceforge.net/projects/mingw/files/MinGW/automake/automake1.11/automake1.11-1.11.1-1/automake1.11-1.11.1-1-mingw32-bin.tar.lzma/download
 set PKG_MINGW_AUTOMAKE_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/automake/automake1.11/automake1.11-1.11-1/automake1.11-1.11-1-mingw32-bin.tar.lzma?use_mirror=softlayer
 set PKG_MINGW_AUTOMAKEWRAPPER_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/automake/wrapper/automake-4-1/automake-4-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_LTDL_DLL=http://downloads.sourceforge.net/project/mingw/MinGW/libtool/libtool-2.2.11a-1/libltdl-2.2.11a-1-mingw32-dll-7.tar.lzma?use_mirror=voxel
@@ -224,7 +229,8 @@ set PKG_MINGW_LIBMPC_DLL=http://downloads.sourceforge.net/project/mingw/MinGW/mp
 set PKG_MINGW_MINGWRT_DLL=http://downloads.sourceforge.net/project/mingw/MinGW/BaseSystem/RuntimeLibrary/MinGW-RT/mingwrt-3.18/mingwrt-3.18-mingw32-dll.tar.gz?use_mirror=voxel
 set PKG_MINGW_MINGWRT_DEV=http://downloads.sourceforge.net/project/mingw/MinGW/BaseSystem/RuntimeLibrary/MinGW-RT/mingwrt-3.18/mingwrt-3.18-mingw32-dev.tar.gz?use_mirror=voxel
 set PKG_MINGW_GLIB_DLL=http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.24/glib_2.24.0-2_win32.zip
-set PKG_MINGW_PKGCONFIG_BIN=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.23-3_win32.zip
+set PKG_MINGW_PKGCONFIG_BIN=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
+set PKG_MINGW_PKGCONFIG_DEV=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-dev_0.25-1_win32.zip
 set PKG_MINGW_GDB_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/BaseSystem/GDB/GDB-7.1/gdb-7.1-2-mingw32-bin.tar.gz?use_mirror=voxel
 
 set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/Files/Junction.zip
@@ -237,10 +243,18 @@ cd /d "%TMPDIR%"
 
 rem Clean existing msys dir if we have one
 if exist "%DEST_MSYS_DIR%" rmdir /S /Q "%DEST_MSYS_DIR%"
+
 mkdir "%DEST_MSYS_DIR%" > nul 2>&1
 
 mkdir "%MSYSDIR%" > nul 2>&1
 mkdir "%MINGWDIR%" > nul 2>&1
+
+rem Re-add the .gitignore file
+echo !.gitignore> "%DEST_MSYS_DIR%\.gitignore"
+echo *>>          "%DEST_MSYS_DIR%\.gitignore"
+
+rem Mark .gitignore as hidden
+attrib +H "%DEST_MSYS_DIR%\.gitignore"
 
 rem Initialize mingw-get
 rem For now we're not really using it, but perhaps in the future we will
@@ -359,8 +373,13 @@ if "%DOWNLOAD%" == "1" (
 	call :download mingw-autoconf-bin "%PKG_MINGW_AUTOCONF_BIN%"
 	call :download mingw-autoconfwrapper-bin "%PKG_MINGW_AUTOCONFWRAPPER_BIN%"
 	call :download mingw-automake-1_4-bin "%PKG_MINGW_AUTOMAKE_1_4_BIN%"
+	call :download mingw-automake-1_5-bin "%PKG_MINGW_AUTOMAKE_1_5_BIN%"
+	call :download mingw-automake-1_6-bin "%PKG_MINGW_AUTOMAKE_1_6_BIN%"
+	call :download mingw-automake-1_7-bin "%PKG_MINGW_AUTOMAKE_1_7_BIN%"
 	call :download mingw-automake-1_8-bin "%PKG_MINGW_AUTOMAKE_1_8_BIN%"
+	call :download mingw-automake-1_9-bin "%PKG_MINGW_AUTOMAKE_1_9_BIN%"
 	call :download mingw-automake-1_10-bin "%PKG_MINGW_AUTOMAKE_1_10_BIN%"
+	call :download mingw-automake-1_11-bin "%PKG_MINGW_AUTOMAKE_1_11_BIN%"
 	call :download mingw-automake-bin "%PKG_MINGW_AUTOMAKE_BIN%"
 	call :download mingw-automakewrapper-bin "%PKG_MINGW_AUTOMAKEWRAPPER_BIN%"
 	call :download mingw-ltdl-bin "%PKG_MINGW_LTDL_DLL%"
@@ -370,6 +389,7 @@ if "%DOWNLOAD%" == "1" (
 	call :download mingw-make-bin "%PKG_MINGW_MAKE_BIN%"
 	call :download mingw-glib-dll "%PKG_MINGW_GLIB_DLL%"
 	call :download mingw-pkg-config-bin "%PKG_MINGW_PKGCONFIG_BIN%"
+	call :download mingw-pkg-config-dev "%PKG_MINGW_PKGCONFIG_DEV%"
 	call :download mingw-gettextpo-dll "%PKG_MINGW_LIBGETTEXTPO_DLL%"
 	call :download mingw-intl-dll "%PKG_MINGW_INTL_DLL%"
 	call :download mingw-libasprintf-dll "%PKG_MINGW_LIBASPRINTF_DLL%"
@@ -537,8 +557,13 @@ if "%UNTAR%" == "1" (
 	call :extract mingw-autoconf-bin %MINGWDIR%
 	call :extract mingw-autoconfwrapper-bin %MINGWDIR%
 	call :extract mingw-automake-1_4-bin %MINGWDIR%
+	call :extract mingw-automake-1_5-bin %MINGWDIR%
+	call :extract mingw-automake-1_6-bin %MINGWDIR%
+	call :extract mingw-automake-1_7-bin %MINGWDIR%
 	call :extract mingw-automake-1_8-bin %MINGWDIR%
+	call :extract mingw-automake-1_9-bin %MINGWDIR%
 	call :extract mingw-automake-1_10-bin %MINGWDIR%
+	call :extract mingw-automake-1_11-bin %MINGWDIR%
 	call :extract mingw-automake-bin %MINGWDIR%
 	call :extract mingw-automakewrapper-bin %MINGWDIR%
 	call :extract mingw-ltdl-bin %MINGWDIR%
@@ -570,8 +595,9 @@ if "%UNTAR%" == "1" (
 	7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\dmake\dmake.zip" > nul 2>&1
 	
 	echo Extracting perl...
-	7za -y "-o%MINGWDIR%\perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
-	move "%MSYSDIR%\bin\perl.exe" "%MSYSDIR%\bin\perl-msys.exe" > nul 2>&1
+	7za -y "-o%MSYSDIR%\opt\strawberry-perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
+	REM 7za -y "-o%MINGWDIR%\perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
+	REM move "%MSYSDIR%\bin\perl.exe" "%MSYSDIR%\bin\perl-msys.exe" > nul 2>&1
 	
 	echo Extracting mingw-glib-dll...
 	move mingw-glib-dll.tar.lzma mingw-glib-dll.zip > nul 2>&1
@@ -580,6 +606,10 @@ if "%UNTAR%" == "1" (
 	echo Extracting mingw-pkg-config-bin...
 	move mingw-pkg-config-bin.tar.lzma mingw-pkg-config-bin.zip > nul 2>&1
 	7za -y "-o%MINGWDIR%" x mingw-pkg-config-bin.zip > nul 2>&1
+	
+	echo Extracting mingw-pkg-config-dev...
+	move mingw-pkg-config-dev.tar.lzma mingw-pkg-config-dev.zip > nul 2>&1
+	7za -y "-o%MINGWDIR%" x mingw-pkg-config-dev.zip > nul 2>&1
 	
 	echo Extracting sysinternals-junction-bin...
 	move sysinternals-junction-bin.tar.lzma sysinternals-junction-bin.zip > nul 2>&1
@@ -684,8 +714,13 @@ if "%CLEAN%" == "1" (
 	call :clean mingw-autoconf-bin
 	call :clean mingw-autoconfwrapper-bin
 	call :clean mingw-automake-1_4-bin
+	call :clean mingw-automake-1_5-bin
+	call :clean mingw-automake-1_6-bin
+	call :clean mingw-automake-1_7-bin
 	call :clean mingw-automake-1_8-bin
+	call :clean mingw-automake-1_9-bin
 	call :clean mingw-automake-1_10-bin
+	call :clean mingw-automake-1_11-bin
 	call :clean mingw-automake-bin
 	call :clean mingw-automakewrapper-bin
 	call :clean mingw-ltdl-bin
@@ -724,6 +759,7 @@ if "%CLEAN%" == "1" (
 	
 	del mingw-glib-dll.zip
 	del mingw-pkg-config-bin.zip
+	del mingw-pkg-config-dev.zip
 	
 	rem Clean gettext libs and includes that we don't want hanging around
 	"%TOOLSBINDIR%\rm" -rf "%MSYSDIR%\lib\lib*"

@@ -9,10 +9,11 @@ set DIR=%~dp0.
 set CURRDIR=%CD%
 set MSYSDIR=%DIR%
 set MINGWDIR=%MSYSDIR%\mingw
-set PERLDIR=%MINGWDIR%\perl\perl
 set MINGWARCHDIR=%MSYSDIR%\mingw-x86_64
+set OPTPERLDIR=%MSYSDIR%\opt\strawberry-perl
+set INTLTOOL_PERL=%OPTPERLDIR%\perl\bin\perl.exe
 
-set PATH=%PATH%;%MINGWARCHDIR%\bin;%PERLDIR%\bin
+set PATH=%PATH%;%MINGWARCHDIR%\bin;%OPTPERLDIR%\perl\bin;%OPTPERLDIR%\c\bin;
 
 cd /d "%DIR%"
 msys.bat
