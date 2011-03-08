@@ -31,6 +31,7 @@ set BUILDDIR=%TOOLSDIR%\..\msys
 set SHORTCUTDIR=%TOOLSDIR%\..
 set MSYSDIR=%BUILDDIR%
 set MINGWDIR=%MSYSDIR%\mingw
+set OPTDIR=%MSYSDIR%\opt
 set DEST_MSYS_DIR=%MSYSDIR%
 set MINGW_GET_DEFAULTS=%TMPDIR%\var\lib\mingw-get\data\defaults.xml
 set SHORTCUT_SUFFIX=x86
@@ -595,7 +596,7 @@ if "%UNTAR%" == "1" (
 	7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\dmake\dmake.zip" > nul 2>&1
 	
 	echo Extracting perl...
-	7za -y "-o%MSYSDIR%\opt\strawberry-perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
+	7za -y "-o%OPTDIR%\strawberry-perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
 	REM 7za -y "-o%MINGWDIR%\perl" x "%PACKAGESDIR%\perl\perl.zip" > nul 2>&1
 	REM move "%MSYSDIR%\bin\perl.exe" "%MSYSDIR%\bin\perl-msys.exe" > nul 2>&1
 	
@@ -628,8 +629,8 @@ if "%UNTAR%" == "1" (
 	)
 	
 	if "%MULTIPLATFORMBUILD%" == "1" (
-		call :extract ossbuild-w64-x86-bin %MINGWDIR%-x86
-		call :extract ossbuild-w64-x86_64-bin %MINGWDIR%-x86_64
+		call :extract ossbuild-w64-x86-bin %OPTDIR%\mingw-w64\x86
+		call :extract ossbuild-w64-x86_64-bin %OPTDIR%\mingw-w64\x86_64
 		
 		copy /Y "%PACKAGESDIR%\msys\msys-x86.bat" "%MSYSDIR%\msys-x86.bat"
 		copy /Y "%PACKAGESDIR%\msys\msys-x86_64.bat" "%MSYSDIR%\msys-x86_64.bat"

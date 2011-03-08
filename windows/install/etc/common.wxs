@@ -30,6 +30,7 @@
 			<ComponentRef Id="OSSBuildInstallRegistryWin64" />
 			<ComponentRef Id="OSSBuildEnvironmentVariables" />
 
+			<ComponentRef Id="OSSBuildInstallSrcDirCreate" />
 			<ComponentRef Id="OSSBuildInstallSDKDirCreate" />
 			<ComponentRef Id="OSSBuildInstallMainDirCreate" />
 			<ComponentRef Id="OSSBuildInstallBuildDirCreate" />
@@ -138,6 +139,14 @@
 								<Component Id="OSSBuildInstallSDKDirCreate" Guid="{B07E9DD0-2D01-4e51-B75C-4C652A25E133}">
 									<CreateFolder />
 									<RemoveFolder Id="OSSBuildInstallSDKDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Src\ -->
+							<Directory Id="OSSBuildInstallSrcDir" Name="Src">
+								<Component Id="OSSBuildInstallSrcDirCreate" Guid="{BD3251C9-81CD-43AC-88B6-DC927A6B16C1}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallSrcDirRemove" On="uninstall" />
 								</Component>
 							</Directory>
 

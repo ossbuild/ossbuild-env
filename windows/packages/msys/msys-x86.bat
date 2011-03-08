@@ -8,8 +8,9 @@ REM **********************************************************************
 set DIR=%~dp0.
 set CURRDIR=%CD%
 set MSYSDIR=%DIR%
+set OPTDIR=%MSYSDIR%\opt
 set MINGWDIR=%MSYSDIR%\mingw
-set MINGWARCHDIR=%MSYSDIR%\mingw-x86
+set MINGWARCHDIR=%OPTDIR%\mingw-w64\x86
 set OPTPERLDIR=%MSYSDIR%\opt\strawberry-perl
 set INTLTOOL_PERL=%OPTPERLDIR%\perl\bin\perl.exe
 

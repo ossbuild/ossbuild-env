@@ -8,5 +8,4 @@ instead of the current home directory.
 This has been done to have a machine-wide jhbuild instead of a user-specific 
 one that would have had to be an unwanted extra post-install step.
 
-sanitycheck.py has been modified to correctly identify gettext, automake, 
-and intltool perl modules.
+msys.patch includes several fixes for running jhbuild in an msys env.
