@@ -16,43 +16,16 @@ make -f Makefile.ossbuild install PREFIX=/mingw
 cd ../ && rm -rf jhbuild
 
 #Add env var to profile
-profile=/etc/profile
 echo Modifying the default user profile...
-echo '#Move up 2 directories to locate where the OSSBuild env was installed.' >> $profile
-echo 'OSSBUILD_HOME=`cd / && pwd -W`/../../' >> $profile
-echo '' >> $profile
-echo '#Export some important directories as env vars' >> $profile
-echo 'export OSSBUILD_HOME=`cd $OSSBUILD_HOME && pwd -W`' >> $profile
-echo 'export OSSBUILD_SRC=$OSSBUILD_HOME/Src' >> $profile
-echo 'export OSSBUILD_BUILD=$OSSBUILD_HOME/Build' >> $profile
-echo 'export OSSBUILD_PACKAGES=$OSSBUILD_HOME/Packages' >> $profile
-echo '' >> $profile
-echo '#Configure some mount points.' >> $profile
-echo 'if ! mount | grep -q /ossbuild; then ' >> $profile
-echo '	mount "$OSSBUILD_HOME" /ossbuild' >> $profile
-echo 'fi' >> $profile
-echo 'if ! mount | grep -q /src; then ' >> $profile
-echo '	mount "$OSSBUILD_SRC" /src' >> $profile
-echo 'fi' >> $profile
-echo 'if ! mount | grep -q /build; then ' >> $profile
-echo '	mount "$OSSBUILD_BUILD" /build' >> $profile
-echo 'fi' >> $profile
-echo 'if ! mount | grep -q /packages; then ' >> $profile
-echo '	mount "$OSSBUILD_PACKAGES" /packages' >> $profile
-echo 'fi' >> $profile
-echo '' >> $profile
-echo '#Create jhbuild config file.' >> $profile
-echo 'if [ ! -e .jhbuildrc ]; then' >> $profile
-echo '	touch .jhbuildrc' >> $profile
-echo 'fi' >> $profile
-echo '' >> $profile
-echo "#Set intltool's perl" >> $profile
-echo 'export INTLTOOL_PERL=/opt/strawberry-perl/perl/bin/perl' >> $profile
+mkdir -p /etc/profile.d/
+cp -p -f $PACKAGES/msys/ossbuild.sh /etc/profile.d/ossbuild.sh
 
 jhbuild_defaults=/mingw/lib/python/site-packages/jhbuild/jhbuild/defaults.jhbuildrc
 echo Modifying jhbuild defaults...
+echo " " >> $jhbuild_defaults
 #modulesets_dir='E:/Development/ossbuild-git/ossbuild-packages/packages/'
 #moduleset = modulesets_dir + 'ossbuild.modules'
+echo "moduleset = 'https://github.com/ossbuild/ossbuild-packages/raw/master/packages/ossbuild.modules'" >> $jhbuild_defaults
 echo "modules = ['ossbuild']" >> $jhbuild_defaults
 echo "use_local_modulesets = True" >> $jhbuild_defaults
 echo "build_policy = 'updated'" >> $jhbuild_defaults
