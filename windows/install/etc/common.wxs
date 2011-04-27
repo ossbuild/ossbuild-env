@@ -32,6 +32,7 @@
 
 			<ComponentRef Id="OSSBuildInstallSrcDirCreate" />
 			<ComponentRef Id="OSSBuildInstallSDKDirCreate" />
+			<ComponentRef Id="OSSBuildInstallHomeDirCreate" />
 			<ComponentRef Id="OSSBuildInstallMainDirCreate" />
 			<ComponentRef Id="OSSBuildInstallBuildDirCreate" />
 			<ComponentRef Id="OSSBuildInstallPackagesDirCreate" />
@@ -147,6 +148,14 @@
 								<Component Id="OSSBuildInstallSrcDirCreate" Guid="{BD3251C9-81CD-43AC-88B6-DC927A6B16C1}">
 									<CreateFolder />
 									<RemoveFolder Id="OSSBuildInstallSrcDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Home\ -->
+							<Directory Id="OSSBuildInstallHomeDir" Name="Main">
+								<Component Id="OSSBuildInstallHomeDirCreate" Guid="{20FC2A40-EBFC-47F0-823C-46E0D5425522}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallHomeDirRemove" On="uninstall" />
 								</Component>
 							</Directory>
 
