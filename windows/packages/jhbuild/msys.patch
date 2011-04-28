@@ -233,6 +233,74 @@ index 17a6fb7..5603fe1 100644
  
          now = time.time()
  
+diff --git a/jhbuild/versioncontrol/tarball.py b/jhbuild/versioncontrol/tarball.py
+index efc84ef..e8e3e7e 100644
+--- a/jhbuild/versioncontrol/tarball.py
++++ b/jhbuild/versioncontrol/tarball.py
+@@ -25,6 +25,7 @@ try:
+     import hashlib
+ except ImportError:
+     import md5 as hashlib
++import shutil
+ import urlparse
+ import urllib2
+ import logging
+@@ -36,6 +37,7 @@ from jhbuild.modtypes import get_branch
+ from jhbuild.utils.unpack import unpack_archive
+ from jhbuild.utils import httpcache
+ from jhbuild.utils.sxml import sxml
++from jhbuild.utils.env import is_absolute_windows_path, resolve_path_for_env
+ 
+ 
+ class TarballRepository(Repository):
+@@ -206,20 +208,33 @@ class TarballBranch(Branch):
+             self._check_tarball()
+         except BuildStateError:
+             # don't have the tarball, try downloading it and check again
+-            if has_command('wget'):
+-                res = buildscript.execute(
+-                        ['wget', '--continue', self.module, '-O', localfile],
+-                        extra_env={
+-                          'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
+-                          'PATH': os.environ.get('UNMANGLED_PATH')})
+-            elif has_command('curl'):
+-                res = buildscript.execute(
+-                        ['curl', '--continue-at', '-', '-L', self.module, '-o', localfile],
+-                        extra_env={
+-                          'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
+-                          'PATH': os.environ.get('UNMANGLED_PATH')})
+-            else:
+-                raise FatalError(_("unable to find wget or curl"))
++            modulefile = self.module
++            baseuri = self.repository.moduleset_uri
++            if baseuri:
++                if is_absolute_windows_path(baseuri):
++                    # On Windows, path like c:... are local
++                    modulefile = os.path.abspath(os.path.join(os.path.dirname(baseuri), modulefile))
++                else:
++                    modulefile = urlparse.urljoin(baseuri, modulefile)
++            islocal = os.path.isfile(modulefile)
++            localfile = os.path.abspath(localfile)
++            if islocal:
++                shutil.copy2(modulefile, localfile)
++            else: 
++                if has_command('wget'):
++                    res = buildscript.execute(
++                            ['wget', '--continue', modulefile, '-O', localfile],
++                            extra_env={
++                              'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
++                              'PATH': os.environ.get('UNMANGLED_PATH')})
++                elif has_command('curl'):
++                    res = buildscript.execute(
++                            ['curl', '--continue-at', '-', '-L', modulefile, '-o', localfile],
++                            extra_env={
++                              'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
++                              'PATH': os.environ.get('UNMANGLED_PATH')})
++                else:
++                    raise FatalError(_("unable to find wget or curl"))
+ 
+             self._check_tarball()
+ 
 -- 
 1.7.4.msysgit.0
 
