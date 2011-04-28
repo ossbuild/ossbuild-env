@@ -128,6 +128,8 @@ set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/Files/Junctio
 set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.4-preview20110204.7z
 set PKG_STRAWBERRY_PERL_BIN=http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 
+set PKG_SUBVERSION_BIN=http://alagazam.net/svn-1.6.16/svn-win32-1.6.16.zip
+
 set PKG_OSSBUILD_W64_GCC_X86_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86-ossbuild-bin-r164692.tar.lzma
 set PKG_OSSBUILD_W64_GCC_X86_64_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86_64-ossbuild-bin-r164692.tar.lzma
 
@@ -145,7 +147,7 @@ call :download mingw-pkg-config-bin "%PKG_MINGW_PKGCONFIG_BIN%"
 call :download mingw-pkg-config-dev "%PKG_MINGW_PKGCONFIG_DEV%"
 call :download mingw-gettext-runtime-bin "%PKG_MINGW_GETTEXTRUNTIME_BIN%"
 call :download sysinternals-junction-bin "%PKG_SYSINTERNALS_JUNCTION_BIN%"
-	
+
 rem Get msysGit which has a newer version of perl
 if "%GCCBUILD%" neq "1" (
 	echo Retrieving msys-git...
@@ -193,6 +195,9 @@ if "%GCCBUILD%" neq "1" (
 
 rem It's a straight up executable from a website
 move msys-flip-bin.tar.lzma "%MSYSDIR%\bin\flip.exe" > nul 2>&1
+
+echo Extracting subversion...
+7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\subversion\subversion.zip" > nul 2>&1
 
 echo Extracting cmake...
 7za -y "-o%MINGWDIR%" x "%PACKAGESDIR%\cmake\cmake.zip" > nul 2>&1
