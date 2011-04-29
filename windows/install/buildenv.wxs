@@ -41,8 +41,8 @@
 			<ComponentRef Id="OSSBuildBuildEnvMSysX86_64Shortcut" />
 		</ComponentGroup>
 
-		<!-- C:\OSSBuild\Environment\ -->
-		<DirectoryRef Id="OSSBuildInstallEnvironmentDir">
+		<!-- C:\OSSBuild\sys\ -->
+		<DirectoryRef Id="OSSBuildInstallSysDir">
 			<!-- Fill in any files we'll need -->
 		</DirectoryRef>
 

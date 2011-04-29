@@ -34,6 +34,11 @@
 		<xsl:attribute name="Id">MSYS_X86_64_BAT</xsl:attribute>
 	</xsl:template>
 
+	<!-- Change the msys directory to "." -->
+	<xsl:template match="wix:DirectoryRef[@Id='OSSBuildInstallSysDir']/wix:Directory[@Name='msys']/@Name">
+		<xsl:attribute name="Name">.</xsl:attribute>
+	</xsl:template>
+
 	<xsl:template match="wix:File">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" />

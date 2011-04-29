@@ -11,7 +11,7 @@ cd ~/
 mkdir jhbuild && cd jhbuild
 git clone http://git.gitorious.org/~ylatuya/jhbuild/ylatuyas-jhbuild.git .
 cp -fp $PACKAGES/jhbuild/Makefile.ossbuild .
-git apply $PACKAGES/jhbuild/msys.patch
+git apply --ignore-whitespace --ignore-space-change $PACKAGES/jhbuild/msys.patch
 make -f Makefile.ossbuild install PREFIX=/mingw
 cd ../ && rm -rf jhbuild
 
@@ -31,10 +31,10 @@ echo "use_local_modulesets = True" >> $jhbuild_defaults
 echo "build_policy = 'updated'" >> $jhbuild_defaults
 echo "alwaysautogen = True" >> $jhbuild_defaults
 echo "module_extra_env['msys-intltool']={ 'PERL': os.environ['INTLTOOL_PERL'] }" >> $jhbuild_defaults
-echo "prefix = os.environ['OSSBUILD_BUILD_DIR'] + '/'" >> $jhbuild_defaults
-echo "checkoutroot = os.environ['OSSBUILD_SRC_DIR']" >> $jhbuild_defaults
-echo "tarballdir = os.environ['OSSBUILD_SRC_DIR']" >> $jhbuild_defaults
-echo "buildroot = os.environ['OSSBUILD_BUILD_DIR']" >> $jhbuild_defaults
+echo "prefix = os.environ['OSSBUILD_BUILD_STAGING_DIR'] + '/'" >> $jhbuild_defaults
+echo "checkoutroot = os.environ['OSSBUILD_BUILD_SRC_DIR']" >> $jhbuild_defaults
+echo "tarballdir = os.environ['OSSBUILD_BUILD_PKG_DIR']" >> $jhbuild_defaults
+echo "buildroot = os.environ['OSSBUILD_BUILD_OBJ_DIR']" >> $jhbuild_defaults
 echo "os.environ['CFLAGS'] = '-m32 -mms-bitfields -pipe -DWINVER=0x0501'" >> $jhbuild_defaults
 echo "os.environ['CPPFLAGS'] = '-DMINGW64 -D__MINGW64__ -DMINGW32 -D__MINGW32__'" >> $jhbuild_defaults
 echo "os.environ['LDFLAGS'] = '-Wl,--enable-auto-image-base -Wl,--enable-auto-import -Wl,--enable-runtime-pseudo-reloc-v2 -Wl,--kill-at '" >> $jhbuild_defaults
