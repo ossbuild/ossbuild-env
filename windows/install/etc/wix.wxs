@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	This is used primarily to detect if WiX is installed on the system and 
+	if it is, add an environment variable for it.
+	
+	We search the Win32 and Win64 registry hives for an installation path. 
+	If we find it, we set the WIXINSTALLDIR variable. If it's not found, 
+	then the variable is empty (null).
+-->
+
+<?include properties.wxi ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<ComponentGroup Id="WiXCheck">
+			<ComponentRef Id="WixEnvVars" />
+		</ComponentGroup>
+
+		<!-- Attempt to locate a WiX installation -->
+		<Property Id="REGISTRY_WIX_INSTALL_DIR_WIN32">
+			<RegistrySearch Id="RegWiXInstallDirSearchWin32" Root="HKLM" Key="SOFTWARE\Microsoft\Windows Installer XML\$(var.WIX_VERSION)" Name="InstallRoot" Type="raw" Win64="no" />
+		</Property>
+
+		<Property Id="REGISTRY_WIX_INSTALL_DIR_WIN64">
+			<RegistrySearch Id="RegWiXInstallDirSearchWin64" Root="HKLM" Key="SOFTWARE\Microsoft\Windows Installer XML\$(var.WIX_VERSION)" Name="InstallRoot" Type="raw" Win64="yes" />
+		</Property>
+
+		<!-- Initialize w/ a typical WiX install dir -->
+		<CustomAction Id="SetWiXInstallDirFromRegistryWin32" Property="WIXINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_WIX_INSTALL_DIR_WIN32]" />
+		<CustomAction Id="SetWiXInstallDirFromRegistryWin64" Property="WIXINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_WIX_INSTALL_DIR_WIN64]" />
+		
+		<!-- Open a browser to the download page if it's not installed. -->
+		<CustomAction Id="SetWiXInstallDownloadURL" Property="WixShellExecTarget" Value="$(var.WIX_DOWNLOAD_URL)" />
+		<CustomAction Id="WiXOpenInstallDownloadURL" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" Return="ignore" />
+		
+		<!-- Display an error message if it's not installed. -->
+		<CustomAction Id="WiXInstallDirError" Error="The Windows Installer XML (WiX) Toolset v$(var.WIX_VERSION) must be installed before proceeding." />
+
+		<InstallExecuteSequence>
+			<Custom Action="SetWiXInstallDirFromRegistryWin32" Before="SetWiXInstallDirFromRegistryWin64" />
+			<Custom Action="SetWiXInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_WIX_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="WiXInstallDirError" After="SetWiXInstallDirFromRegistryWin64"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+		</InstallExecuteSequence>
+
+		<InstallUISequence>
+			<Custom Action="SetWiXInstallDirFromRegistryWin32" Before="SetWiXInstallDirFromRegistryWin64" />
+			<Custom Action="SetWiXInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_WIX_INSTALL_DIR_WIN32]]></Custom>
+			
+			<!-- Open a browser to the download page. -->
+			<Custom Action="SetWiXInstallDownloadURL" After="SetWiXInstallDirFromRegistryWin64" />
+			<Custom Action="WiXOpenInstallDownloadURL" After="SetWiXInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+			
+			<!-- Display an error message. -->
+			<Custom Action="WiXInstallDirError" After="WiXOpenInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+		</InstallUISequence>
+		
+		<DirectoryRef Id="TARGETDIR">
+			<Component Id="WixEnvVars" Guid="{AC38E05C-D802-4864-B2C5-4FD5BAC05F66}">
+				<Condition><![CDATA[WIXINSTALLDIR]]></Condition>
+				
+				<Environment Id="WiXDir" Action="set" Part="first" Name="OSSBUILD_WIX_DIR" Permanent="no" System="yes" Value="[WIXINSTALLDIR]" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

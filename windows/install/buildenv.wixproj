@@ -35,11 +35,18 @@
       <Link>etc\python.wxs</Link>
     </Compile>
     <Compile Include="etc\ui\simple.wxs" />
+    <Compile Include="etc\wix.wxs">
+      <Link>etc\wix.wxs</Link>
+    </Compile>
     <Compile Include="generated\msys.wxs">
       <Link>generated\msys.wxs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
