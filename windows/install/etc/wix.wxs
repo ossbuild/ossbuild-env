@@ -40,7 +40,7 @@
 		<InstallExecuteSequence>
 			<Custom Action="SetWiXInstallDirFromRegistryWin32" Before="SetWiXInstallDirFromRegistryWin64" />
 			<Custom Action="SetWiXInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_WIX_INSTALL_DIR_WIN32]]></Custom>
-			<Custom Action="WiXInstallDirError" After="SetWiXInstallDirFromRegistryWin64"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+			<Custom Action="WiXInstallDirError" After="SetWiXInstallDirFromRegistryWin64"><![CDATA[NOT WIXINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallExecuteSequence>
 
 		<InstallUISequence>
@@ -49,10 +49,10 @@
 			
 			<!-- Open a browser to the download page. -->
 			<Custom Action="SetWiXInstallDownloadURL" After="SetWiXInstallDirFromRegistryWin64" />
-			<Custom Action="WiXOpenInstallDownloadURL" After="SetWiXInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+			<Custom Action="WiXOpenInstallDownloadURL" After="SetWiXInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR AND NOT Installed]]></Custom>
 			
 			<!-- Display an error message. -->
-			<Custom Action="WiXInstallDirError" After="WiXOpenInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR]]></Custom>
+			<Custom Action="WiXInstallDirError" After="WiXOpenInstallDownloadURL"><![CDATA[NOT WIXINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallUISequence>
 		
 		<DirectoryRef Id="TARGETDIR">

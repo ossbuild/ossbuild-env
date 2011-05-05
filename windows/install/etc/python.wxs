@@ -42,7 +42,7 @@
 		<InstallExecuteSequence>
 			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetWiXInstallDirFromRegistryWin64" />
 			<Custom Action="SetPythonInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
-			<Custom Action="PythonInstallDirError" After="SetPythonInstallDirFromRegistryWin64"><![CDATA[NOT PYTHONINSTALLDIR]]></Custom>
+			<Custom Action="PythonInstallDirError" After="SetPythonInstallDirFromRegistryWin64"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallExecuteSequence>
 
 		<InstallUISequence>
@@ -51,10 +51,10 @@
 
 			<!-- Open a browser to the download page. -->
 			<Custom Action="SetPythonInstallDownloadURL" After="SetPythonInstallDirFromRegistryWin64" />
-			<Custom Action="PythonOpenInstallDownloadURL" After="SetPythonInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR]]></Custom>
+			<Custom Action="PythonOpenInstallDownloadURL" After="SetPythonInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
 
 			<!-- Display an error message. -->
-			<Custom Action="PythonInstallDirError" After="PythonOpenInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR]]></Custom>
+			<Custom Action="PythonInstallDirError" After="PythonOpenInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallUISequence>
 
 		<DirectoryRef Id="TARGETDIR">
