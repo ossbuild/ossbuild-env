@@ -8,8 +8,8 @@ that they are accessible through most firewalls.
 Packages
 -------------------------------------
 
-cmake                   -       2.8.3           -       http://www.cmake.org/files/v2.8/cmake-2.8.3-win32-x86.zip
-                                                        Modified by moving all directories up and removing cmake-2.8.3-win32-x86.
+cmake                   -       2.8.6           -       http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.zip
+                                                        Modified by moving all directories up and removing cmake-2.8.6-win32-x86.
 
 
 

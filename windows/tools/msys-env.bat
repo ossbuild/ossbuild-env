@@ -109,14 +109,14 @@ attrib +H "%DEST_MSYS_DIR%\.gitignore"
 
 
 
-set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.2-alpha-3/mingw-get-0.2-mingw32-alpha-3-bin.tar.gz?use_mirror=softlayer
-set PKG_MINGWGET_LIC=http://sourceforge.net/projects/mingw/files/Automated MinGW Installer/mingw-get/mingw-get-0.2-alpha-3/mingw-get-0.2-mingw32-alpha-3-lic.tar.gz?use_mirror=softlayer
-set PKG_MINGWGETPKGINFO_BIN=http://sourceforge.net/projects/mingw/files/Automated MinGW Installer/mingw-get/mingw-get-0.2-alpha-3/pkginfo-0.2-mingw32-alpha-3-bin.tar.gz?use_mirror=softlayer
+set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/mingw-get-0.3-mingw32-alpha-2.1-bin.tar.xz?use_mirror=voxel
+set PKG_MINGWGET_LIC=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/mingw-get-0.3-mingw32-alpha-2.1-lic.tar.xz?use_mirror=voxel
+set PKG_MINGWGETPKGINFO_BIN=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/pkginfo-0.3-mingw32-alpha-2.1-bin.tar.xz?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_DOC=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-doc.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_LIC=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-lic.tar.lzma?use_mirror=voxel
 
-set PKG_MINGW_GLIB_DLL=http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26/glib_2.26.1-1_win32.zip
+set PKG_MINGW_GLIB_DLL=http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28/glib_2.28.1-1_win32.zip
 set PKG_MINGW_PKGCONFIG_BIN=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
 set PKG_MINGW_PKGCONFIG_DEV=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-dev_0.25-1_win32.zip
 set PKG_MINGW_GETTEXTRUNTIME_BIN=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip
@@ -125,10 +125,10 @@ set PKG_MSYS_FLIP_BIN=https://ccrma.stanford.edu/~craig/utility/flip/flip.exe
 
 set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/Files/Junction.zip
 
-set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.4-preview20110204.7z
-set PKG_STRAWBERRY_PERL_BIN=http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
+set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.7.1-preview20111027.7z
+set PKG_STRAWBERRY_PERL_BIN=http://strawberryperl.com/download/5.12.3.0/strawberry-perl-5.12.3.0-portable.zip
 
-set PKG_SUBVERSION_BIN=http://alagazam.net/svn-1.6.16/svn-win32-1.6.16.zip
+set PKG_SUBVERSION_BIN=http://alagazam.net/svn-1.7.0/svn-win32-1.7.0.zip
 
 set PKG_OSSBUILD_W64_GCC_X86_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86-ossbuild-bin-r164692.tar.lzma
 set PKG_OSSBUILD_W64_GCC_X86_64_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86_64-ossbuild-bin-r164692.tar.lzma
@@ -304,6 +304,7 @@ set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% msys-perl
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% 
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% mingw32-autotools mingw32-make      mingw32-gdb       mingw32-bsdtar    mingw32-gendef 
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% 
+set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% libgomp           libstdc++
 %MINGW_GET% install %MINGW_GET_TARGETS%
 
 

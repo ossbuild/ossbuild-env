@@ -8,7 +8,7 @@ that they are accessible through most firewalls.
 Packages
 -------------------------------------
 
-subversion              -       1.6.16          -       http://alagazam.net/svn-1.6.16/svn-win32-1.6.16.zip 
+subversion              -       1.7.0           -       http://alagazam.net/svn-1.7.0/svn-win32-1.7.0.zip
                                                         Modified by moving all directories up and removing apache modules (bin/mod*.so) and intl modules (intl/*) and the README.txt
 
 
