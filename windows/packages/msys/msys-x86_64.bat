@@ -5,10 +5,12 @@ REM * Creates a suitable MSys/MinGW environment for building the Windows
 REM * libraries using GCC and associated auto tools.
 REM **********************************************************************
 
+set OSSBUILD_ARCH=x86_64
+
 set DIR=%~dp0.
 set CURR_DIR=%CD%
-set OSSBUILD_DIR=%DIR%\..\..
-set OSSBUILD_HOME_DIR=%OSSBUILD_DIR%\Home
+set OSSBUILD_DIR=%DIR%\..
+set OSSBUILD_HOME_DIR=%OSSBUILD_DIR%\home
 set MSYS_DIR=%DIR%
 set OPT_DIR=%MSYS_DIR%\opt
 set MINGW_DIR=%MSYS_DIR%\mingw

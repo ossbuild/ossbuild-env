@@ -7,6 +7,10 @@
 	
 	<?define PYTHON_VERSION="2.7" ?>
 	<?define PYTHON_VERSION_NAME="27" ?>
+	<?define PYTHON_DOWNLOAD_URL="http://python.org/download/releases/2.7.1/" ?>
+	
+	<?define WIX_VERSION="3.5" ?>
+	<?define WIX_DOWNLOAD_URL="http://wix.codeplex.com/releases/view/60102" ?>
 	
 	<?define PYTHON_VERSION_FULL="$(var.PYTHON_VERSION).0.0" ?>
 	<?define OSSBUILD_VERSION_FULL="$(var.OSSBUILD_VERSION).0" ?>

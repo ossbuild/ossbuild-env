@@ -42,7 +42,7 @@ if exist "%MSYSHOME%" (
 
 
 echo Using WiX heat.exe to generate MSys/MinGW installer output...
-%HEAT% dir "%MSYSDIR%" -sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment -dr OSSBuildInstallEnvironmentDir -var var.MSYS_DIR -t msys.xslt -cg OSSBuildBuildEnvMSys -out "%DIR%\msys.wxs"
+%HEAT% dir "%MSYSDIR%" -sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment -dr OSSBuildInstallSysDir -var var.MSYS_DIR -t msys.xslt -cg OSSBuildBuildEnvMSys -out "%DIR%\msys.wxs"
 
 
 

@@ -30,16 +30,21 @@
 			<ComponentRef Id="OSSBuildInstallRegistryWin64" />
 			<ComponentRef Id="OSSBuildEnvironmentVariables" />
 
-			<ComponentRef Id="OSSBuildInstallSrcDirCreate" />
-			<ComponentRef Id="OSSBuildInstallSDKDirCreate" />
 			<ComponentRef Id="OSSBuildInstallHomeDirCreate" />
-			<ComponentRef Id="OSSBuildInstallMainDirCreate" />
+			<ComponentRef Id="OSSBuildInstallSysDirCreate" />
 			<ComponentRef Id="OSSBuildInstallBuildDirCreate" />
-			<ComponentRef Id="OSSBuildInstallPackagesDirCreate" />
-			<ComponentRef Id="OSSBuildInstallEnvironmentDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgRegDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgSysDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgSysBinDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDevDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDevMsiDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDevIncludeDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDevLibDirCreate" />
+			<ComponentRef Id="OSSBuildInstallPkgDevSrcDirCreate" />
 		</ComponentGroup>
 
-		<Condition Message="This application is only supported on Windows XP, Windows Vista, Windows 7, or higher.">
+		<Condition Message="This environment is only supported on Windows XP, Windows Vista, Windows 7, or higher.">
 			<![CDATA[Installed OR (VersionNT >= 501) OR (VersionNT64 >= 501)]]>
 		</Condition>
 
@@ -120,7 +125,7 @@
 								<CreateFolder />
 								<RemoveFolder Id="InstallDirRemove" On="uninstall" />
 
-								<Environment Id="OSSBuildPath" Action="set" Part="first" Name="PATH" Permanent="no" System="yes" Value="[INSTALLDIR]" />
+								<Environment Id="OSSBuildPath" Action="set" Part="first" Name="PATH" Permanent="no" System="yes" Value="[OSSBUILD_INSTALL_PKG_SYS_BIN_DIR]" />
 								<Environment Id="OSSBuildDir" Action="set" Part="first" Name="OSSBUILD_DIR" Permanent="no" System="yes" Value="[INSTALLDIR]" />
 							</Component>
 
@@ -135,60 +140,102 @@
 								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
 							</Component>
 
-							<!-- C:\OSSBuild\SDK\ -->
-							<Directory Id="OSSBuildInstallSDKDir" Name="SDK">
-								<Component Id="OSSBuildInstallSDKDirCreate" Guid="{B07E9DD0-2D01-4e51-B75C-4C652A25E133}">
-									<CreateFolder />
-									<RemoveFolder Id="OSSBuildInstallSDKDirRemove" On="uninstall" />
-								</Component>
-							</Directory>
-
-							<!-- C:\OSSBuild\Src\ -->
-							<Directory Id="OSSBuildInstallSrcDir" Name="Src">
-								<Component Id="OSSBuildInstallSrcDirCreate" Guid="{BD3251C9-81CD-43AC-88B6-DC927A6B16C1}">
-									<CreateFolder />
-									<RemoveFolder Id="OSSBuildInstallSrcDirRemove" On="uninstall" />
-								</Component>
-							</Directory>
-
-							<!-- C:\OSSBuild\Home\ -->
-							<Directory Id="OSSBuildInstallHomeDir" Name="Main">
-								<Component Id="OSSBuildInstallHomeDirCreate" Guid="{20FC2A40-EBFC-47F0-823C-46E0D5425522}">
+							<!-- C:\OSSBuild\home\ -->
+							<Directory Id="OSSBuildInstallHomeDir" Name="home">
+								<Component Id="OSSBuildInstallHomeDirCreate" Guid="{40C4D5FA-E027-4615-883F-568EA2C446DE}">
 									<CreateFolder />
 									<RemoveFolder Id="OSSBuildInstallHomeDirRemove" On="uninstall" />
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\Main\ -->
-							<Directory Id="OSSBuildInstallMainDir" Name="Main">
-								<Component Id="OSSBuildInstallMainDirCreate" Guid="{1C1676BF-8A4C-45a9-BFBE-94011E084ADC}">
+							<!-- C:\OSSBuild\sys\ -->
+							<Directory Id="OSSBuildInstallSysDir" Name="sys">
+								<Component Id="OSSBuildInstallSysDirCreate" Guid="{6CF49753-2E5E-49FD-8B82-47B8DF92EB78}">
 									<CreateFolder />
-									<RemoveFolder Id="OSSBuildInstallMainDirRemove" On="uninstall" />
+									<RemoveFolder Id="OSSBuildInstallSysDirRemove" On="uninstall" />
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\Build\ -->
-							<Directory Id="OSSBuildInstallBuildDir" Name="Build">
-								<Component Id="OSSBuildInstallBuildDirCreate" Guid="{F9867E17-8FBE-45c5-9E34-134C8C317289}">
+							<!-- C:\OSSBuild\build\ -->
+							<Directory Id="OSSBuildInstallBuildDir" Name="build">
+								<Component Id="OSSBuildInstallBuildDirCreate" Guid="{31389CF8-0FEB-4ED7-8E06-7AF02A8B5DB4}">
 									<CreateFolder />
 									<RemoveFolder Id="OSSBuildInstallBuildDirRemove" On="uninstall" />
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\Packages\ -->
-							<Directory Id="OSSBuildInstallPackagesDir" Name="Packages">
-								<Component Id="OSSBuildInstallPackagesDirCreate" Guid="{D7A978DC-CFC2-4062-AB5D-982F9774F814}">
+							<!-- C:\OSSBuild\pkg\ -->
+							<Directory Id="OSSBuildInstallPkgDir" Name="pkg">
+								<Component Id="OSSBuildInstallPkgDirCreate" Guid="{B3283553-B9EA-4D38-AA50-C10615584E01}">
 									<CreateFolder />
-									<RemoveFolder Id="OSSBuildInstallPackagesDirRemove" On="uninstall" />
+									<RemoveFolder Id="OSSBuildInstallPkgDirRemove" On="uninstall" />
 								</Component>
-							</Directory>
 
-							<!-- C:\OSSBuild\Environment\ -->
-							<Directory Id="OSSBuildInstallEnvironmentDir" Name="Environment">
-								<Component Id="OSSBuildInstallEnvironmentDirCreate" Guid="{3BFD8732-4C11-495c-87B5-D17094440B4C}">
-									<CreateFolder />
-									<RemoveFolder Id="OSSBuildInstallEnvironmentDirRemove" On="uninstall" />
-								</Component>
+								<!-- C:\OSSBuild\pkg\reg\ -->
+								<Directory Id="OSSBuildInstallPkgRegDir" Name="reg">
+									<Component Id="OSSBuildInstallPkgRegDirCreate" Guid="{F624D904-38EC-41C6-B457-6DE1C73C093B}">
+										<CreateFolder />
+										<RemoveFolder Id="OSSBuildInstallPkgRegDirRemove" On="uninstall" />
+									</Component>
+								</Directory>
+
+								<!-- C:\OSSBuild\pkg\sys\ -->
+								<Directory Id="OSSBuildInstallPkgSysDir" Name="sys">
+									<Component Id="OSSBuildInstallPkgSysDirCreate" Guid="{1A404A92-468E-4368-B362-930E5E54DB41}">
+										<CreateFolder />
+										<RemoveFolder Id="OSSBuildInstallPkgSysDirRemove" On="uninstall" />
+									</Component>
+
+									<!-- C:\OSSBuild\pkg\sys\bin\ -->
+									<Directory Id="OSSBuildInstallPkgSysBinDir" Name="bin">
+										<Directory Id="OSSBUILD_INSTALL_PKG_SYS_BIN_DIR" Name=".">
+											<Component Id="OSSBuildInstallPkgSysBinDirCreate" Guid="{E04A4F4E-76C6-4035-B2BF-A7F3845F589F}">
+												<CreateFolder />
+												<RemoveFolder Id="OSSBuildInstallPkgSysBinDirRemove" On="uninstall" />
+											</Component>
+										</Directory>
+									</Directory>
+								</Directory>
+
+								<!-- C:\OSSBuild\pkg\dev\ -->
+								<Directory Id="OSSBuildInstallPkgDevDir" Name="dev">
+									<Component Id="OSSBuildInstallPkgDevDirCreate" Guid="{9F5B9EF4-D632-4C4F-B418-61EEEDF6ECDF}">
+										<CreateFolder />
+										<RemoveFolder Id="OSSBuildInstallPkgDevDirRemove" On="uninstall" />
+									</Component>
+
+									<!-- C:\OSSBuild\pkg\dev\msi\ -->
+									<Directory Id="OSSBuildInstallPkgDevMsiDir" Name="msi">
+										<Component Id="OSSBuildInstallPkgDevMsiDirCreate" Guid="{1856CCBB-3786-4396-B816-1565D5AC342E}">
+											<CreateFolder />
+											<RemoveFolder Id="OSSBuildInstallPkgDevMsiDirRemove" On="uninstall" />
+										</Component>
+									</Directory>
+
+									<!-- C:\OSSBuild\pkg\dev\include\ -->
+									<Directory Id="OSSBuildInstallPkgDevIncludeDir" Name="include">
+										<Component Id="OSSBuildInstallPkgDevIncludeDirCreate" Guid="{E98DC213-6E05-4B8E-BC58-109685CC687B}">
+											<CreateFolder />
+											<RemoveFolder Id="OSSBuildInstallPkgDevIncludeDirRemove" On="uninstall" />
+										</Component>
+									</Directory>
+
+									<!-- C:\OSSBuild\pkg\dev\lib\ -->
+									<Directory Id="OSSBuildInstallPkgDevLibDir" Name="lib">
+										<Component Id="OSSBuildInstallPkgDevLibDirCreate" Guid="{77C5C07D-FDF4-48FF-8D74-FC11D6F0CEF6}">
+											<CreateFolder />
+											<RemoveFolder Id="OSSBuildInstallPkgDevLibDirRemove" On="uninstall" />
+										</Component>
+									</Directory>
+
+									<!-- C:\OSSBuild\pkg\dev\src\ -->
+									<Directory Id="OSSBuildInstallPkgDevSrcDir" Name="src">
+										<Component Id="OSSBuildInstallPkgDevSrcDirCreate" Guid="{AF647E81-21D9-494B-A73A-595F569585AC}">
+											<CreateFolder />
+											<RemoveFolder Id="OSSBuildInstallPkgDevSrcDirRemove" On="uninstall" />
+										</Component>
+									</Directory>
+								</Directory>
 							</Directory>
 							
 						</Directory>

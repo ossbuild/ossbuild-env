@@ -286,13 +286,13 @@ index efc84ef..e8e3e7e 100644
 +            else: 
 +                if has_command('wget'):
 +                    res = buildscript.execute(
-+                            ['wget', '--continue', modulefile, '-O', localfile],
++                            ['wget', '--no-check-certificate', '--continue', modulefile, '-O', localfile],
 +                            extra_env={
 +                              'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
 +                              'PATH': os.environ.get('UNMANGLED_PATH')})
 +                elif has_command('curl'):
 +                    res = buildscript.execute(
-+                            ['curl', '--continue-at', '-', '-L', modulefile, '-o', localfile],
++                            ['curl', '--insecure', '--continue-at', '-', '-L', modulefile, '-o', localfile],
 +                            extra_env={
 +                              'LD_LIBRARY_PATH': os.environ.get('UNMANGLED_LD_LIBRARY_PATH'),
 +                              'PATH': os.environ.get('UNMANGLED_PATH')})

@@ -15,7 +15,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
 		<ComponentGroup Id="PythonCheck">
-			<ComponentRef Id="PythonPath" />
+			<ComponentRef Id="PythonEnvVars" />
 		</ComponentGroup>
 
 		<!-- Attempt to locate a python installation -->
@@ -32,22 +32,34 @@
 		<CustomAction Id="SetPythonInstallDirFromRegistryWin32" Property="PYTHONINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_PYTHON_INSTALL_DIR_WIN32]" />
 		<CustomAction Id="SetPythonInstallDirFromRegistryWin64" Property="PYTHONINSTALLDIR" Execute="firstSequence" Value="[REGISTRY_PYTHON_INSTALL_DIR_WIN64]" />
 
-		<!--
-		TODO: Test that this works in a commandline install
+		<!-- Open a browser to the download page if it's not installed. -->
+		<CustomAction Id="SetPythonInstallDownloadURL" Property="WixShellExecTarget" Value="$(var.PYTHON_DOWNLOAD_URL)" />
+		<CustomAction Id="PythonOpenInstallDownloadURL" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" Return="ignore" />
+
+		<!-- Display an error message if it's not installed. -->
+		<CustomAction Id="PythonInstallDirError" Error="Python v$(var.PYTHON_VERSION) must be installed before proceeding." />
+
 		<InstallExecuteSequence>
-			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetPythonInstallDirFromRegistryWin64" />
-			<Custom Action="SetPythonInstallDirFromRegistryWin64" Before="CostInitialize"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetWiXInstallDirFromRegistryWin64" />
+			<Custom Action="SetPythonInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="PythonInstallDirError" After="SetPythonInstallDirFromRegistryWin64"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallExecuteSequence>
-		-->
 
 		<InstallUISequence>
 			<Custom Action="SetPythonInstallDirFromRegistryWin32" Before="SetPythonInstallDirFromRegistryWin64" />
-			<Custom Action="SetPythonInstallDirFromRegistryWin64" Before="CostInitialize"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="SetPythonInstallDirFromRegistryWin64" After="LaunchConditions"><![CDATA[NOT REGISTRY_PYTHON_INSTALL_DIR_WIN32]]></Custom>
+
+			<!-- Open a browser to the download page. -->
+			<Custom Action="SetPythonInstallDownloadURL" After="SetPythonInstallDirFromRegistryWin64" />
+			<Custom Action="PythonOpenInstallDownloadURL" After="SetPythonInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
+
+			<!-- Display an error message. -->
+			<Custom Action="PythonInstallDirError" After="PythonOpenInstallDownloadURL"><![CDATA[NOT PYTHONINSTALLDIR AND NOT Installed]]></Custom>
 		</InstallUISequence>
 
 		<DirectoryRef Id="TARGETDIR">
 			<!-- Add python to the system path ONLY if it's already installed. It should have been installed by the bootstrapper already. -->
-			<Component Id="PythonPath" Guid="{3FCC5EBA-F7B9-4465-814A-47BDCFE63B8F}">
+			<Component Id="PythonEnvVars" Guid="{3FCC5EBA-F7B9-4465-814A-47BDCFE63B8F}">
 				<Condition><![CDATA[PYTHONINSTALLDIR]]></Condition>
 				
 				<Environment Id="PythonPath" Action="set" Part="first" Name="PATH" Permanent="no" System="yes" Value="[PYTHONINSTALLDIR]" />

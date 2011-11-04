@@ -31,6 +31,9 @@
 			<!-- Python -->
 			<ComponentGroupRef Id="PythonCheck" />
 
+			<!-- WiX -->
+			<ComponentGroupRef Id="WiXCheck" />
+
 			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
 			<ComponentGroupRef Id="Product.Generated" />
 		</Feature>
@@ -41,8 +44,8 @@
 			<ComponentRef Id="OSSBuildBuildEnvMSysX86_64Shortcut" />
 		</ComponentGroup>
 
-		<!-- C:\OSSBuild\Environment\ -->
-		<DirectoryRef Id="OSSBuildInstallEnvironmentDir">
+		<!-- C:\OSSBuild\sys\ -->
+		<DirectoryRef Id="OSSBuildInstallSysDir">
 			<!-- Fill in any files we'll need -->
 		</DirectoryRef>
 
@@ -53,7 +56,7 @@
 				<RemoveFolder Id="OSSBuildShortcutsToolsDir" On="uninstall" />
 				<RemoveFolder Id="OSSBuildShortcutsDir" On="uninstall" />
 			</Component>
-			
+			 
 			<Component Id="OSSBuildBuildEnvMSysX86Shortcut">
 				<Shortcut Id="MSys_x86" Name="OSSBuild (x86) Command Prompt" Target="[!MSYS_X86_BAT]" Directory="OSSBuildShortcutsToolsDir" Description="Creates an MSys command prompt for OSSBuild v$(var.OSSBUILD_VERSION) work on the x86 platform." />
 				<RegistryValue Root="HKCU" Key="$(var.REGISTRY_OSSBUILD_BUILD_ENV_SHORTCUTS_KEY)" Name="MSys_x86" Value="" Type="string" KeyPath="yes" />
