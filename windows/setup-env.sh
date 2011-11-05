@@ -19,6 +19,8 @@ cd ../ && rm -rf jhbuild
 echo Modifying the default user profile...
 mkdir -p /etc/profile.d/
 cp -p -f $PACKAGES/msys/ossbuild.sh /etc/profile.d/ossbuild.sh
+mkdir -p /etc/profile.d/ossbuild/
+cp -p -f $PACKAGES/msys/ossbuild/* /etc/profile.d/ossbuild/
 
 jhbuild_defaults=/mingw/lib/python/site-packages/jhbuild/jhbuild/defaults.jhbuildrc
 echo Modifying jhbuild defaults...
