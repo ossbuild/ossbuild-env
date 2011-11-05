@@ -159,7 +159,7 @@ load_java_tools() {
 		java_jvm_lib="${gcc_lib_dir}/libjvm.dll.a"
 		java_jawt_lib="${gcc_lib_dir}/libjawt.dll.a"
 		
-		if [ ! -f "${java_jawt_lib}a" ] || [ ! -f "${java_jvm_lib}" ]; then 
+		if [ ! -f "${java_jawt_lib}" ] || [ ! -f "${java_jvm_lib}" ]; then 
 			echo "INFO: OSSBuild has detected that there are missing Java import libraries. This is normal for the first run after a new install."
 			echo "INFO: Generating new import libraries..."
 			
