@@ -38,6 +38,14 @@
 	<xsl:template match="wix:DirectoryRef[@Id='OSSBuildInstallSysDir']/wix:Directory[@Name='msys']/@Name">
 		<xsl:attribute name="Name">.</xsl:attribute>
 	</xsl:template>
+	
+	<!-- Change the msys /etc/profile.d/ directory id to something that can be referenced elsewhere -->
+	<xsl:template match="wix:Directory[@Name='etc']/wix:Directory[@Name='profile.d']/@Id">
+		<xsl:attribute name="Id">OSSBuildInstallSysEtcProfileDir</xsl:attribute>
+	</xsl:template>
+	
+	<!-- Remove the msys /etc/profile.d/ossbuild/ directory -->
+	<xsl:template match="wix:Directory[@Name='etc']/wix:Directory[@Name='profile.d']/wix:Directory[@Name='ossbuild']" />
 
 	<xsl:template match="wix:File">
 		<xsl:copy>

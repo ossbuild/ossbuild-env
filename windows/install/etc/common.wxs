@@ -42,6 +42,8 @@
 			<ComponentRef Id="OSSBuildInstallPkgDevIncludeDirCreate" />
 			<ComponentRef Id="OSSBuildInstallPkgDevLibDirCreate" />
 			<ComponentRef Id="OSSBuildInstallPkgDevSrcDirCreate" />
+
+			<ComponentRef Id="OSSBuildInstallSysEtcProfileOssbuildDirCreate"/>
 		</ComponentGroup>
 
 		<Condition Message="This environment is only supported on Windows XP, Windows Vista, Windows 7, or higher.">
@@ -265,8 +267,23 @@
 					</Directory>
 					
 				</Directory>
+				
 			</Directory>
 			
 		</Directory>
+
+		<!-- C:\OSSBuild\sys\etc\profile.d\ -->
+		<DirectoryRef Id="OSSBuildInstallSysEtcProfileDir">
+			
+			<!-- C:\OSSBuild\sys\etc\profile.d\ossbuild\ -->
+			<Directory Id="OSSBuildInstallSysEtcProfileOssbuildDir" Name="ossbuild">
+				<Component Id="OSSBuildInstallSysEtcProfileOssbuildDirCreate" Guid="{AE08368E-3936-4D57-807D-E4E8EFDD822A}">
+					<CreateFolder />
+					<RemoveFolder Id="OSSBuildInstallSysEtcProfileOssbuildDirRemove" On="uninstall" />
+				</Component>
+			</Directory>
+			
+		</DirectoryRef>
+		
 	</Fragment>
 </Wix>

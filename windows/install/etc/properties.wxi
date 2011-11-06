@@ -7,7 +7,7 @@
 
 	<?define COMPANY_NAME="OSSBuild" ?>
 	<?define MANUFACTURER="OSSBuild" ?>
-	<?define MANUFACTURER_URL="http://code.google.com/p/ossbuild/" ?>
+	<?define MANUFACTURER_URL="https://github.com/ossbuild/" ?>
 	
 	<?define COMPANY_DIR_NAME="OSSBuild" ?>
 	<?define VERSION_DIR_NAME="v$(var.OSSBUILD_VERSION)" ?>
@@ -60,5 +60,8 @@
 
 	<?define OSSBUILD_IMAGE_HEADER="..\..\shared\resources\header.bmp" ?>
 	<?define OSSBUILD_IMAGE_WELCOME="..\..\shared\resources\welcome.bmp" ?>
+	
+	<?define PACKAGES_DIR="..\packages" ?>
+	<?define PACKAGES_MSYS_DIR="$(var.PACKAGES_DIR)\msys" ?>
 	
 </Include>
