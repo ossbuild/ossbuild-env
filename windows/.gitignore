@@ -1,3 +1,7 @@
 !.gitignore
+
 *.lnk
 *.suo
+*.7z
+*.tar.lzma
+build-packages/

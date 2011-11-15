@@ -3,7 +3,7 @@
 CURR_DIR=`pwd`
 TOP=$(dirname $0)/.
 ROOT=$( (cd "$TOP" && pwd) )
-PACKAGES=`cd / && pwd -W`/../packages
+PACKAGES=`cd / && pwd -W`/../../packages
 
 #Install jhbuild
 echo Installing jhbuild...

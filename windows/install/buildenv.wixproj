@@ -41,6 +41,9 @@
     <Compile Include="generated\msys.wxs">
       <Link>generated\msys.wxs</Link>
     </Compile>
+    <Compile Include="generated\ruby.wxs">
+      <Link>generated\ruby.wxs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUtilExtension">
@@ -69,11 +72,17 @@
     <Content Include="generated\generate-msys.wxs.bat">
       <Link>generated\generate-msys.wxs.bat</Link>
     </Content>
+    <Content Include="generated\generate-ruby.wxs.bat">
+      <Link>generated\generate-ruby.wxs.bat</Link>
+    </Content>
     <Content Include="generated\generate-setup.bat">
       <Link>generated\generate-setup.bat</Link>
     </Content>
     <Content Include="generated\msys.xslt">
       <Link>generated\msys.xslt</Link>
+    </Content>
+    <Content Include="generated\ruby.xslt">
+      <Link>generated\ruby.xslt</Link>
     </Content>
     <Content Include="install.bat">
       <Link>install.bat</Link>
@@ -107,6 +116,6 @@ call "$(ProjectDir)generated\generate-setup.bat"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>REM Blank out fstab
-echo #Empty &gt; "$(ProjectDir)..\msys\etc\fstab"</PreBuildEvent>
+echo #Empty &gt; "$(ProjectDir)..\build-packages\msys\etc\fstab"</PreBuildEvent>
   </PropertyGroup>
 </Project>

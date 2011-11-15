@@ -27,10 +27,13 @@ set PACKAGESDIR=%TOPDIR%\packages
 set TOOLSDIR=%DIR%
 set TOOLSBINDIR=%TOOLSDIR%\bin
 set PATCHESDIR=%TOOLSDIR%\patches
-set BUILDDIR=%TOOLSDIR%\..\msys
+set BUILDPKGDIR=%TOOLSDIR%\..\build-packages
+set BUILDDIR=%BUILDPKGDIR%
+set SOURCEDIR=%TMPDIR%\ossbuild-env-src
 set WINDOWSENVDIR=%TOOLSDIR%\..
 set SHORTCUTDIR=%TOOLSDIR%\..
-set MSYSDIR=%BUILDDIR%
+set RUBYDIR=%BUILDPKGDIR%\ruby
+set MSYSDIR=%BUILDDIR%\msys
 set MINGWDIR=%MSYSDIR%\mingw
 set OPTDIR=%MSYSDIR%\opt
 set DEST_MSYS_DIR=%MSYSDIR%
@@ -45,9 +48,9 @@ if /i "%BUILDTYPE%" equ "multiplatform" (
 	set X64BUILD=0
 	set GCCBUILD=0
 	set MULTIPLATFORMBUILD=1
-	set MSYSDIR=%BUILDDIR%
-	set MINGWDIR=%BUILDDIR%\mingw
-	set DEST_MSYS_DIR=%BUILDDIR%
+	set MSYSDIR=%BUILDDIR%\msys
+	set MINGWDIR=%BUILDDIR%\msys\mingw
+	set DEST_MSYS_DIR=%BUILDDIR%\msys
 	set SHORTCUT_SUFFIX=multi-platform
 )
 
@@ -57,9 +60,9 @@ if /i "%BUILDTYPE%" equ "X86" (
 	set X64BUILD=0
 	set GCCBUILD=0
 	set MULTIPLATFORMBUILD=0
-	set MSYSDIR=%BUILDDIR%\x86
-	set MINGWDIR=%BUILDDIR%\x86\mingw
-	set DEST_MSYS_DIR=%BUILDDIR%\x86
+	set MSYSDIR=%BUILDDIR%\msys\x86
+	set MINGWDIR=%BUILDDIR%\msys\x86\mingw
+	set DEST_MSYS_DIR=%BUILDDIR%\msys\x86
 	set SHORTCUT_SUFFIX=x86
 )
 
@@ -69,9 +72,9 @@ if /i "%BUILDTYPE%" equ "X86_64" (
 	set X64BUILD=1
 	set GCCBUILD=0
 	set MULTIPLATFORMBUILD=0
-	set MSYSDIR=%BUILDDIR%\x86_64
-	set MINGWDIR=%BUILDDIR%\x86_64\mingw
-	set DEST_MSYS_DIR=%BUILDDIR%\x86_64
+	set MSYSDIR=%BUILDDIR%\msys\x86_64
+	set MINGWDIR=%BUILDDIR%\msys\x86_64\mingw
+	set DEST_MSYS_DIR=%BUILDDIR%\msys\x86_64
 	set SHORTCUT_SUFFIX=x86_64
 )
 
@@ -81,9 +84,9 @@ if /i "%BUILDTYPE%" equ "GCCBUILD" (
 	set X64BUILD=0
 	set GCCBUILD=1
 	set MULTIPLATFORMBUILD=0
-	set MSYSDIR=%BUILDDIR%\gcc-build
-	set MINGWDIR=%BUILDDIR%\gcc-build\mingw
-	set DEST_MSYS_DIR=%BUILDDIR%\gcc-build
+	set MSYSDIR=%BUILDDIR%\msys\gcc-build
+	set MINGWDIR=%BUILDDIR%\msys\gcc-build\mingw
+	set DEST_MSYS_DIR=%BUILDDIR%\msys\gcc-build
 	set SHORTCUT_SUFFIX=gcc-build
 )
 
@@ -109,9 +112,9 @@ attrib +H "%DEST_MSYS_DIR%\.gitignore"
 
 
 
-set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/mingw-get-0.3-mingw32-alpha-2.1-bin.tar.xz?use_mirror=voxel
-set PKG_MINGWGET_LIC=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/mingw-get-0.3-mingw32-alpha-2.1-lic.tar.xz?use_mirror=voxel
-set PKG_MINGWGETPKGINFO_BIN=http://downloads.sourceforge.net/project/mingw/Automated MinGW Installer/mingw-get/mingw-get-0.3-alpha-2.1/pkginfo-0.3-mingw32-alpha-2.1-bin.tar.xz?use_mirror=voxel
+set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/mingw-get-0.4-mingw32-alpha-1-bin.tar.xz?use_mirror=voxel
+set PKG_MINGWGET_LIC=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/mingw-get-0.4-mingw32-alpha-1-lic.tar.xz?use_mirror=voxel
+set PKG_MINGWGETPKGINFO_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/pkginfo-0.4-mingw32-alpha-1-bin.tar.xz?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_DOC=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-doc.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_LIC=http://downloads.sourceforge.net/project/mingw/MinGW/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-lic.tar.lzma?use_mirror=voxel
@@ -130,6 +133,10 @@ set PKG_STRAWBERRY_PERL_BIN=http://strawberryperl.com/download/5.12.3.0/strawber
 
 set PKG_SUBVERSION_BIN=http://alagazam.net/svn-1.7.0/svn-win32-1.7.0.zip
 
+rem See http://rubyinstaller.org/downloads/
+set PKG_RUBY_BIN=http://rubyforge.org/frs/download.php/75466/ruby-1.9.3-p0-i386-mingw32.7z
+set PKG_RUBY_BIN_DIR=ruby-1.9.3-p0-i386-mingw32
+
 set PKG_OSSBUILD_W64_GCC_X86_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86-ossbuild-bin-r164692.tar.lzma
 set PKG_OSSBUILD_W64_GCC_X86_64_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86_64-ossbuild-bin-r164692.tar.lzma
 
@@ -147,6 +154,9 @@ call :download mingw-pkg-config-bin "%PKG_MINGW_PKGCONFIG_BIN%"
 call :download mingw-pkg-config-dev "%PKG_MINGW_PKGCONFIG_DEV%"
 call :download mingw-gettext-runtime-bin "%PKG_MINGW_GETTEXTRUNTIME_BIN%"
 call :download sysinternals-junction-bin "%PKG_SYSINTERNALS_JUNCTION_BIN%"
+
+echo Retrieving ruby...
+wget --quiet --no-check-certificate -O ruby.7z "%PKG_RUBY_BIN%" > nul 2>&1
 
 rem Get msysGit which has a newer version of perl
 if "%GCCBUILD%" neq "1" (
@@ -228,6 +238,11 @@ echo Extracting sysinternals-junction-bin...
 move sysinternals-junction-bin.tar.lzma sysinternals-junction-bin.zip > nul 2>&1
 7za -y "-o%MSYSDIR%\bin" x sysinternals-junction-bin.zip > nul 2>&1
 
+echo Extracting ruby...
+7za -y "-o%RUBYDIR%" x ruby.7z > nul 2>&1
+"%TOOLSBINDIR%\mv" "%RUBYDIR%\%PKG_RUBY_BIN_DIR%\*" "%RUBYDIR%" > nul 2>&1
+"%TOOLSBINDIR%\rm" -rf "%RUBYDIR%\%PKG_RUBY_BIN_DIR%"
+
 if "%X86BUILD%" == "1" (
 	call :extract ossbuild-w64-x86-bin %MINGWDIR%
 )
@@ -303,11 +318,25 @@ set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% msys-wget         msys-xz           ms
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% msys-perl         
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% 
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% mingw32-autotools mingw32-make      mingw32-gdb       mingw32-bsdtar    mingw32-gendef 
+set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% mingw-get         
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% 
 set MINGW_GET_TARGETS=%MINGW_GET_TARGETS% libgomp           libstdc++
 %MINGW_GET% install %MINGW_GET_TARGETS%
 
 
+
+rem Source
+mkdir "%SOURCEDIR%" > nul 2>&1
+cd /d "%SOURCEDIR%"
+%MINGW_GET% --all-related source %MINGW_GET_TARGETS%
+%MINGW_GET% --all-related licence %MINGW_GET_TARGETS%
+cd /d ".."
+"%TOOLSBINDIR%\rm" -f "..\..\ossbuild-env-msys-src.7z"
+7za a -t7z "..\..\ossbuild-env-msys-src.7z" ossbuild-env-src
+mkdir "..\..\install\bin\Release\en-us"
+copy /Y "..\..\ossbuild-env-msys-src.7z" "..\..\install\bin\Release\en-us\"
+rem Remove the downloaded source from the mingw-get cache. It's available as a separate download.
+"%TOOLSBINDIR%\rm" -rf "%MINGWDIR%\var\cache\mingw-get\source\"
 
 rem Cleanup
 cd /d "%TMPDIR%"
@@ -317,6 +346,8 @@ call :clean mingw-pexports-lic
 call :clean mingw-get-bin
 call :clean mingw-get-lic
 call :clean mingw-get-pkginfo-bin
+
+del ruby.7z
 
 if "%X86BUILD%" == "1" (
 	call :clean ossbuild-w64-x86-bin

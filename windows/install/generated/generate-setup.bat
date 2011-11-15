@@ -16,7 +16,8 @@ set WIXDIR=%WIX%
 set WIXBINDIR=%WIXDIR%bin
 set SETUPBLD="%WIXBINDIR%\setupbld.exe"
 
-set MSYSDIR=%DIR%\..\..\msys
+set BUILDPKGDIR=%DIR%\..\..\build-packages
+set MSYSDIR=%BUILDPKGDIR%\msys
 set MSYSHOME=%MSYSDIR%\home
 set GENTMPDIR=%DIR%\tmp
 

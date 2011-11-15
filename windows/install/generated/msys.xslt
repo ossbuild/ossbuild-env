@@ -12,7 +12,7 @@
 	<!-- Add preprocessing instructions -->
 	<xsl:template match="/wix:Wix">
 		<xsl:processing-instruction name="include"><![CDATA[..\etc\properties.wxi]]></xsl:processing-instruction>
-		<xsl:processing-instruction name="define"><![CDATA[MSYS_DIR="..\msys"]]></xsl:processing-instruction>
+		<xsl:processing-instruction name="define"><![CDATA[MSYS_DIR="..\build-packages\msys"]]></xsl:processing-instruction>
 		<xsl:processing-instruction name="define"><![CDATA[MSYS_DISKID="2"]]></xsl:processing-instruction>
 		<xsl:copy>
 			<xsl:apply-templates select="@*" />
@@ -42,6 +42,11 @@
 	<!-- Change the msys /etc/profile.d/ directory id to something that can be referenced elsewhere -->
 	<xsl:template match="wix:Directory[@Name='etc']/wix:Directory[@Name='profile.d']/@Id">
 		<xsl:attribute name="Id">OSSBuildInstallSysEtcProfileDir</xsl:attribute>
+	</xsl:template>
+	
+	<!-- Change the msys /mingw/ directory id to something that can be referenced elsewhere -->
+	<xsl:template match="wix:DirectoryRef[@Id='OSSBuildInstallSysDir']/wix:Directory[@Name='msys']/wix:Directory[@Name='mingw']/@Id">
+		<xsl:attribute name="Id">OSSBuildInstallMinGWDir</xsl:attribute>
 	</xsl:template>
 	
 	<!-- Remove the msys /etc/profile.d/ossbuild/ directory -->
