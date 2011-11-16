@@ -14,4 +14,7 @@ To get the build environment installer setup you'll need to:
            .pyc (compiled python files) or Makefile.am's, etc. The home 
            directory should also be completely absent.
 
-  5. Open and build bootstrap.sln from Visual Studio 2010.
+  5. Run install/generated/generate-ruby.wxs.bat to use WiX' heat tool 
+     for auto-generating a list of files to add to the installer.
+
+  6. Open and build bootstrap.sln from Visual Studio 2010.

@@ -10,13 +10,10 @@
 #                                                                             #
 ###############################################################################
 
-SUPPORTED_MS_VISUAL_STUDIO_VERSIONS=( "10.0" "9.0" )
-SUPPORTED_MSVC_COMMON_TOOLS=( VS100COMNTOOLS VS90COMNTOOLS )
+OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS=( "10.0" "9.0" )
+OSSBUILD_SUPPORTED_MSVC_COMMON_TOOLS=( VS100COMNTOOLS VS90COMNTOOLS )
 
 export OSSBUILD_MSVC_LIB=
-export OSSBUILD_WIX_HEAT=
-export OSSBUILD_WIX_BIN_DIR=
-export OSSBUILD_WIX_HEAT_DEFAULT_OPTS="-sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment "
 
 command -v reg &>/dev/null || { 
 	echo "WARNING: OSSBuild requires the Windows reg tool to examine the system for .NET framework tools." >&2; 
@@ -67,7 +64,7 @@ find_ms_visual_studio_common_tools_dir() {
 		"HKCU"
 	)
 	reg_value=""
-	for version in ${SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
+	for version in ${OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
 	do
 		for reg_key in ${reg_keys[@]}
 		do
@@ -89,7 +86,7 @@ find_ms_visual_studio_common_tools_dir() {
 	if ([ "$reg_value" = "" ]) || ([ ! -d "${reg_value}Common7/Tools/" ]); then
 		#Attempt to locate an env var like VS100COMNTOOLS or VS90COMNTOOLS 
 		#and use that if it exists.
-		for common_tools in ${SUPPORTED_MSVC_COMMON_TOOLS[@]}
+		for common_tools in ${OSSBUILD_SUPPORTED_MSVC_COMMON_TOOLS[@]}
 		do
 			#Expand the string env variable to its actual value.
 			common_tools=${!common_tools}
@@ -120,7 +117,7 @@ find_ms_visual_studio_install_dir() {
 		"HKCU"
 	)
 	reg_value=""
-	for version in ${SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
+	for version in ${OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
 	do
 		for reg_key in ${reg_keys[@]}
 		do
@@ -160,7 +157,7 @@ find_ms_visual_cpp_install_dir() {
 		"HKCU"
 	)
 	reg_value=""
-	for version in ${SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
+	for version in ${OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
 	do
 		for reg_key in ${reg_keys[@]}
 		do
@@ -200,7 +197,7 @@ find_ms_fsharp_install_dir() {
 		"HKCU"
 	)
 	reg_value=""
-	for version in ${SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
+	for version in ${OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS[@]}
 	do
 		for reg_key in ${reg_keys[@]}
 		do
@@ -476,24 +473,8 @@ load_ms_exports() {
 
 load_ms_exports
 
-#Validate a proper WiX installation.
-if [ -z "${WIX}" ]; then 
-	echo "WARNING: OSSBuild requires WiX v3.5 or later to properly generate Windows developer merge module (msm) packages."
-else
-	if [ ! -d "${WIX}bin" ]; then
-		echo "WARNING: Unable to locate the WiX bin/ directory. OSSBuild requires WiX v3.5 or later to be properly installed."
-	else
-		if [ ! -e "${WIX}bin/heat.exe" ]; then 
-			echo "WARNING: Unable to locate the WiX heat.exe application for generating WiX scripts. OSSBuild requires WiX v3.5 or later to be properly installed."
-		else
-			export OSSBUILD_WIX_BIN_DIR=`cd "${WIX}bin" && pwd -W`
-			export OSSBUILD_WIX_HEAT=${OSSBUILD_WIX_BIN_DIR}/heat.exe
-		fi
-	fi
-fi
-
 if ([ ! -d "${VCINSTALLDIR}/BIN" ]) || ([ ! -e "${VCINSTALLDIR}/BIN/lib.exe" ]); then 
-	echo "WARNING: OSSBuild requires Microsoft developer tools to be installed to properly generate Visual C++-compatible lib (.lib) files. Please install Visual Studio or an equivalent platform SDK."
+	echo "WARNING: OSSBuild will be unable to properly generate Visual C++-compatible lib (.lib) files. Please install Microsoft Visual Studio or an equivalent platform SDK."
 else
 	export OSSBUILD_MSVC_LIB=${VCINSTALLDIR}/BIN/lib.exe
 fi

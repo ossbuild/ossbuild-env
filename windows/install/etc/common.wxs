@@ -112,6 +112,11 @@
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder" Name="PFiles">
 				<Directory Id="INSTALLDIR" Name=".">
+
+					<Component Id="Empty" Guid="{E303C046-7872-433E-9965-EE48256560B5}">
+						<CreateFolder />
+						<RemoveFolder Id="Empty" On="uninstall" />
+					</Component>
 					
 					<!-- C:\OSSBuild\ -->
 					<Directory Id="OSSBuildInstallDir" Name=".">
@@ -133,13 +138,13 @@
 
 							<!-- Set registry entries indicating where it's been installed. -->
 							<Component Id="OSSBuildInstallRegistryWin32" Guid="{4E868E1E-F6B7-46c2-8350-971FB894CD66}" Win64="no">
-								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
-								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
 							</Component>
 
 							<Component Id="OSSBuildInstallRegistryWin64" Guid="{73A0504F-33BC-40fb-9124-2E9543312850}" Win64="yes">
-								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
-								<Registry Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
 							</Component>
 
 							<!-- C:\OSSBuild\home\ -->

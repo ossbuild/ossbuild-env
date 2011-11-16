@@ -123,7 +123,7 @@ find_java_jdk_home() {
 	return 0
 }
 
-load_java_tools() {
+load_java_jdk_tools() {
 	local java_jdk_home=$(find_java_jdk_home)
 	local java_jdk_bin=${java_jdk_home}/bin
 	local java_jdk_lib=${java_jdk_home}/lib
@@ -149,15 +149,15 @@ load_java_tools() {
 		export OSSBUILD_JAVA_JDK_LIB_DIR=`cd "${java_jdk_lib}" && pwd -W`
 		export OSSBUILD_JAVA_JDK_INCLUDE_DIR=`cd "${java_jdk_include}" && pwd -W`
 		
-		gcc_triplet=$(gcc -dumpmachine)
-		gcc_dir=$(cd $(dirname $(which gcc))/../${gcc_triplet} && pwd)
-		gcc_lib_dir="${gcc_dir}/lib"
+		local gcc_triplet=$(gcc -dumpmachine)
+		local gcc_dir=$(cd $(dirname $(which gcc))/../${gcc_triplet} && pwd)
+		local gcc_lib_dir="${gcc_dir}/lib"
 		
-		java_jvm_so="${java_jdk_jvm_bin}/jvm.dll"
-		java_jawt_so="${java_jdk_jawt_bin}/jawt.dll"
+		local java_jvm_so="${java_jdk_jvm_bin}/jvm.dll"
+		local java_jawt_so="${java_jdk_jawt_bin}/jawt.dll"
 		
-		java_jvm_lib="${gcc_lib_dir}/libjvm.dll.a"
-		java_jawt_lib="${gcc_lib_dir}/libjawt.dll.a"
+		local java_jvm_lib="${gcc_lib_dir}/libjvm.dll.a"
+		local java_jawt_lib="${gcc_lib_dir}/libjawt.dll.a"
 		
 		if [ ! -f "${java_jawt_lib}" ] || [ ! -f "${java_jvm_lib}" ]; then 
 			echo "INFO: OSSBuild has detected that there are missing Java import libraries. This is normal for the first run after a new install."
@@ -178,6 +178,10 @@ load_java_tools() {
 	else
 		echo "WARNING: OSSBuild was unable to recognize a Java Development Kit (JDK) on this system."
 	fi
+}
+
+load_java_tools() {
+	load_java_jdk_tools
 }
 
 load_java_tools

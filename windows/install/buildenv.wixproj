@@ -17,14 +17,14 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
     <LinkerAdditionalOptions>-reusecab -cc ./cache/</LinkerAdditionalOptions>
-    <SuppressIces>ICE80</SuppressIces>
+    <SuppressIces>ICE80;ICE60</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <LinkerAdditionalOptions>-reusecab -cc ./cache/</LinkerAdditionalOptions>
-    <SuppressIces>ICE80</SuppressIces>
+    <SuppressIces>ICE80;ICE60</SuppressIces>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="buildenv.wxs" />
@@ -35,9 +35,9 @@
       <Link>etc\python.wxs</Link>
     </Compile>
     <Compile Include="etc\ui\simple.wxs" />
-    <Compile Include="etc\wix.wxs">
+    <None Include="etc\wix.wxs">
       <Link>etc\wix.wxs</Link>
-    </Compile>
+    </None>
     <Compile Include="generated\msys.wxs">
       <Link>generated\msys.wxs</Link>
     </Compile>

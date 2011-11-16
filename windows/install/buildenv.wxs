@@ -29,20 +29,27 @@
 			ConfigurableDirectory="INSTALLDIR"
 		>
 
-			<Feature Id="Env_Ruby" Title="Ruby Support" Description="Installs Ruby tools such as rake, gem, etc." Level="1" AllowAdvertise="no">
+			<Feature Id="Env_Ruby" Title="Ruby Support" Description="Installs Ruby tools such as rake, gem, etc." Level="1000" AllowAdvertise="no">
 				<!-- Ruby -->
 				<ComponentGroupRef Id="OSSBuildBuildEnvRuby" />
 			</Feature>
 
-			<Feature Id="Tools" Title="Additional Tool Support" Description="Provides support for automatic discovery of 3rd party tools such as Microsoft compilers and JDKs." Display="expand" Level="1" AllowAdvertise="no">
-				<Feature Id="Tools_Microsoft" Title="Microsoft Tools" Description="Configures the environment to make use of Microsoft tools. The Platform SDK or Visual Studio should be installed." Level="1" AllowAdvertise="no">
+			<Feature Id="Tools" Title="Additional Tool Support" Description="Provides support for automatic discovery of 3rd party tools such as Microsoft compilers and JDKs." Display="expand" Level="1000" AllowAdvertise="no">
+				<ComponentRef Id="Empty" />
+				
+				<Feature Id="Tools_Microsoft" Title="Microsoft Tools" Description="Configures the environment to make use of Microsoft tools. The Platform SDK or Visual Studio should be installed." Level="1000" AllowAdvertise="no">
 					<!-- Microsoft Tools -->
 					<ComponentGroupRef Id="OSSBuildMicrosoftTools" />
 				</Feature>
 
-				<Feature Id="Tools_Java" Title="Java Tools" Description="Configures the environment to make use of an installed JDK. An Oracle-provided JDK should be installed." Level="1" AllowAdvertise="no">
+				<Feature Id="Tools_Java" Title="Java Tools" Description="Configures the environment to make use of an installed JDK. An Oracle-provided JDK should be installed." Level="1000" AllowAdvertise="no">
 					<!-- Java Tools -->
 					<ComponentGroupRef Id="OSSBuildJavaTools" />
+				</Feature>
+
+				<Feature Id="Tools_Installer" Title="Installer Tools" Description="Configures the environment to make use of installer tools such as WiX (Windows Installer XML). WiX 3.5 or higher should be installed." Level="1000" AllowAdvertise="no">
+					<!-- Installer Tools -->
+					<ComponentGroupRef Id="OSSBuildInstallerTools" />
 				</Feature>
 			</Feature>
 
@@ -59,7 +66,8 @@
 			<ComponentGroupRef Id="PythonCheck" />
 
 			<!-- WiX -->
-			<ComponentGroupRef Id="WiXCheck" />
+			<!-- Disable WiX check for now; it's not a hard dependency anymore. It will be looked for when the environment is run. -->
+			<!-- <ComponentGroupRef Id="WiXCheck" /> -->
 
 			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
 			<ComponentGroupRef Id="Product.Generated" />
@@ -79,6 +87,10 @@
 			<ComponentRef Id="OSSBuildJavaTools" />
 		</ComponentGroup>
 
+		<ComponentGroup Id="OSSBuildInstallerTools">
+			<ComponentRef Id="OSSBuildInstallerTools" />
+		</ComponentGroup>
+
 		<!-- C:\OSSBuild\sys\ -->
 		<DirectoryRef Id="OSSBuildInstallSysDir">
 			<!-- Fill in any files we'll need -->
@@ -92,8 +104,11 @@
 			<Component Id="OSSBuildJavaTools">
 				<File Id="OSSBuildJavaToolsShellScript" KeyPath="yes" Source="$(var.PACKAGES_MSYS_DIR)\ossbuild\java-tools.sh" DiskId="1" />
 			</Component>
+			<Component Id="OSSBuildInstallerTools">
+				<File Id="OSSBuildInstallerToolsShellScript" KeyPath="yes" Source="$(var.PACKAGES_MSYS_DIR)\ossbuild\installer-tools.sh" DiskId="1" />
+			</Component>
 		</DirectoryRef>
-
+		
 		<DirectoryRef Id="OSSBuildShortcutsToolsDir">
 			<Component Id="OSSBuildBuildEnvUninstallShortcut">
 				<Shortcut Id="Uninstall" Name="Uninstall Build Environment" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Directory="OSSBuildShortcutsToolsDir" Description="Uninstalls the OSSBuild v$(var.OSSBUILD_VERSION) build environment." />
