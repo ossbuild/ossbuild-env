@@ -146,4 +146,3 @@ clean_environment_variables_on_error() {
 
 load_installer_tools
 clean_environment_variables
-
