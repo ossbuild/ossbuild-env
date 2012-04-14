@@ -369,6 +369,94 @@ find_ms_framework35_ver() {
 	return 0
 }
 
+find_alt_ms_framework_dir() {
+	reg_keys=( 
+		'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client' 
+		'SOFTWARE\Wow6432Node\Microsoft\NET Framework Setup\NDP\v4\Client' 
+		'SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5' 
+		'SOFTWARE\Wow6432Node\Microsoft\NET Framework Setup\NDP\v3.5' 
+	)
+	reg_hives=(
+		"HKLM"
+		"HKCU"
+	)
+	reg_value=""
+	
+	#Save off the separator used in the loop.
+	local sep=$IFS
+	IFS=$(echo -en "\n\b")
+	
+	for reg_key in ${reg_keys[@]}
+	do
+		for reg_hive in ${reg_hives[@]}
+		do
+			reg_value=$(query_registry_value "$reg_hive" "$reg_key" "InstallPath")
+			if [ "$reg_value" != "" ]; then
+				break;
+			fi
+		done
+		if [ "$reg_value" != "" ]; then
+			break;
+		fi
+	done
+	
+	#Restore the previous separator.
+	IFS=sep
+	
+	if ([ "$reg_value" = "" ]); then
+		echo ""
+		return 1
+	fi
+	if [ -d "$reg_value" ]; then
+		reg_value=`cd "${reg_value}" && pwd`
+	fi
+	echo "$reg_value"
+	return 0
+}
+
+find_alt_ms_framework_ver() {
+	reg_keys=( 
+		'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client' 
+		'SOFTWARE\Wow6432Node\Microsoft\NET Framework Setup\NDP\v4\Client' 
+		'SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5' 
+		'SOFTWARE\Wow6432Node\Microsoft\NET Framework Setup\NDP\v3.5' 
+	)
+	reg_hives=(
+		"HKLM"
+		"HKCU"
+	)
+	reg_value=""
+	
+	#Save off the separator used in the loop.
+	local sep=$IFS
+	IFS=$(echo -en "\n\b")
+	
+	for reg_key in ${reg_keys[@]}
+	do
+		for reg_hive in ${reg_hives[@]}
+		do
+			reg_value=$(query_registry_value "$reg_hive" "$reg_key" "Version")
+			if [ "$reg_value" != "" ]; then
+				break;
+			fi
+		done
+		if [ "$reg_value" != "" ]; then
+			break;
+		fi
+	done
+	
+	#Restore the previous separator.
+	IFS=sep
+	
+	if ([ "$reg_value" = "" ]); then
+		echo ""
+		return 1
+	fi
+	
+	echo "$reg_value"
+	return 0
+}
+
 load_ms_exports() {
 	local ProgramFiles_x86=`env | sed -n s,'^PROGRAMFILES(X86)=',,g`
 
@@ -381,6 +469,8 @@ load_ms_exports() {
 	local framework_ver_32=$(find_ms_framework_ver_32)
 	local framework_ver_64=$(find_ms_framework_ver_64)
 	local framework_35_ver=$(find_ms_framework35_ver)
+	local alt_framework_ver=$(find_alt_ms_framework_ver)
+	local alt_framework_dir=$(find_alt_ms_framework_dir)
 	local vs_common_tools=$(find_ms_visual_studio_common_tools_dir)
 
 	local dev_env_dir=${vs_install_dir}/Common7/IDE
@@ -469,9 +559,26 @@ load_ms_exports() {
 	export DevEnvDir=`cd "${dev_env_dir}" && pwd -W`
 	export FrameworkDir=`cd "${framework_dir}" && pwd -W`
 	export FrameworkVersion=${framework_ver}
+	
+	#Add our own.
+	if [ "${alt_framework_dir}" != "" ]; then
+		export PATH=${alt_framework_dir}:$PATH
+	fi
+	
+	#Create some aliases.
+	local msbuild=$(which MSBuild.exe)
+	if [ "${msbuild}" != "" ]; then
+		eval "alias msbuild='${msbuild}'"
+	fi
+}
+
+clean_environment_variables() {
+	unset OSSBUILD_SUPPORTED_MS_VISUAL_STUDIO_VERSIONS
+	unset OSSBUILD_SUPPORTED_MSVC_COMMON_TOOLS
 }
 
 load_ms_exports
+clean_environment_variables
 
 if ([ ! -d "${VCINSTALLDIR}/BIN" ]) || ([ ! -e "${VCINSTALLDIR}/BIN/lib.exe" ]); then 
 	echo "WARNING: OSSBuild will be unable to properly generate Visual C++-compatible lib (.lib) files. Please install Microsoft Visual Studio or an equivalent platform SDK."

@@ -11,7 +11,7 @@
 
 OSSBUILD_SUPPORTED_WIX_VERSIONS=( "3.5" )
 
-export OSSBUILD_INSTALLER_WIX_HEAT_DEFAULT_OPTS="-sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment "
+OSSBUILD_INSTALLER_WIX_HEAT_DEFAULT_OPTS="-sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment "
 
 command -v reg &>/dev/null || { 
 	echo "WARNING: OSSBuild requires the Windows reg tool to examine the system for installer tools." >&2; 
@@ -94,10 +94,12 @@ load_installer_wix_tools() {
 	local installer_wix_sdk_lib=${installer_wix_sdk}/lib
 	
 	if [ -d "${installer_wix_home}" ]; then
-		export OSSBUILD_INSTALLER_WIX_HOME=`cd "${installer_wix_home}" && pwd -W`
-		export OSSBUILD_INSTALLER_WIX_BIN_DIR=`cd "${installer_wix_bin}" && pwd -W`
-		export OSSBUILD_INSTALLER_WIX_SDK_LIB_DIR=`cd "${installer_wix_sdk_lib}" && pwd -W`
-		export OSSBUILD_INSTALLER_WIX_SDK_INCLUDE_DIR=`cd "${installer_wix_sdk_include}" && pwd -W`
+		if [ -d "${installer_wix_bin}" ]; then
+			export OSSBUILD_INSTALLER_WIX_HOME=`cd "${installer_wix_home}" && pwd -W`
+			export OSSBUILD_INSTALLER_WIX_BIN_DIR=`cd "${installer_wix_bin}" && pwd -W`
+			export OSSBUILD_INSTALLER_WIX_SDK_LIB_DIR=`cd "${installer_wix_sdk_lib}" && pwd -W`
+			export OSSBUILD_INSTALLER_WIX_SDK_INCLUDE_DIR=`cd "${installer_wix_sdk_include}" && pwd -W`
+		fi
 		
 		if [ -d "${installer_wix_bin}" ]; then
 			export PATH="${installer_wix_bin}:$PATH"
@@ -121,9 +123,11 @@ load_installer_wix_tools() {
 			export OSSBUILD_INSTALLER_WIX_DARK=${OSSBUILD_INSTALLER_WIX_BIN_DIR}/dark.exe
 		else
 			echo "WARNING: Unable to locate the WiX heat.exe application for generating installer files."
+			clean_environment_variables_on_error
 		fi
 	else
 		echo "WARNING: OSSBuild was unable to find WiX (Windows Installer XML) on this system."
+		clean_environment_variables_on_error
 	fi
 }
 
@@ -132,4 +136,14 @@ load_installer_tools() {
 	load_installer_wix_tools
 }
 
+clean_environment_variables() {
+	unset OSSBUILD_SUPPORTED_WIX_VERSIONS
+}
+
+clean_environment_variables_on_error() {
+	unset OSSBUILD_INSTALLER_WIX_HEAT_DEFAULT_OPTS
+}
+
 load_installer_tools
+clean_environment_variables
+
