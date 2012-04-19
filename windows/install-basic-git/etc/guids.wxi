@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?define GUID_OSSBUILD_BASIC_GIT_ENV_BUNDLE_UPGRADE_CODE="{4696f354-128f-41e0-9eff-bb9fc1438c57}" ?>
+	
+	<?define GUID_OSSBUILD_BASIC_GIT_ENV_UPGRADE_CODE="{b4e6d175-8171-4b60-838c-2ba4e5599dca}" ?>
+
+</Include>

@@ -126,7 +126,7 @@ set PKG_MINGW_GETTEXTRUNTIME_BIN=http://ftp.gnome.org/pub/gnome/binaries/win32/d
 
 set PKG_MSYS_FLIP_BIN=https://ccrma.stanford.edu/~craig/utility/flip/flip.exe
 
-set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/Files/Junction.zip
+set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/files/Junction.zip
 
 set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.9-preview20120201.7z
 set PKG_STRAWBERRY_PERL_BIN=http://strawberry-perl.googlecode.com/files/strawberry-perl-5.14.2.1-32bit-portable.zip

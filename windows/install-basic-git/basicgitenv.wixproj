@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.5</ProductVersion>
+    <ProjectGuid>{51d1521d-952c-47a9-9502-368346a481f8}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>env</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <Name>basic git env</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <LinkerAdditionalOptions>-reusecab -cc ./cache/</LinkerAdditionalOptions>
+    <SuppressIces>ICE80;ICE60</SuppressIces>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <LinkerAdditionalOptions>-reusecab -cc ./cache/</LinkerAdditionalOptions>
+    <SuppressIces>ICE80;ICE60</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="basicgitenv.wxs" />
+    <Compile Include="etc\common.wxs">
+      <Link>etc\common.wxs</Link>
+    </Compile>
+    <Compile Include="etc\ui\simple.wxs" />
+    <Compile Include="generated\msys.wxs">
+      <Link>generated\msys.wxs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="OSSBuildExtensions">
+      <HintPath>..\..\shared\wix\OSSBuildExtensions.dll</HintPath>
+      <Name>OSSBuildExtensions</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="etc\guids.wxi">
+      <Link>etc\guids.wxi</Link>
+    </Content>
+    <Content Include="etc\properties.wxi">
+      <Link>etc\properties.wxi</Link>
+    </Content>
+    <Content Include="etc\version.wxi">
+      <Link>etc\version.wxi</Link>
+    </Content>
+    <Content Include="generated\generate-msys.wxs.bat">
+      <Link>generated\generate-msys.wxs.bat</Link>
+    </Content>
+    <Content Include="generated\msys.xslt">
+      <Link>generated\msys.xslt</Link>
+    </Content>
+    <Content Include="install.bat">
+      <Link>install.bat</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="etc" />
+    <Folder Include="etc\i18n" />
+    <Folder Include="etc\ui" />
+    <Folder Include="generated" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="etc\i18n\en-us.wxl">
+      <Link>etc\i18n\en-us.wxl</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+  <PropertyGroup>
+    <PostBuildEvent></PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>REM Blank out fstab
+echo #Empty &gt; "$(ProjectDir)..\build-packages-git-only\msys\etc\fstab"</PreBuildEvent>
+  </PropertyGroup>
+</Project>

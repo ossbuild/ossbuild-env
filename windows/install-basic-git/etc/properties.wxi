@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include version.wxi ?>
+	<?include guids.wxi ?>
+
+	<?define COMPANY_NAME="OSSBuild" ?>
+	<?define MANUFACTURER="OSSBuild" ?>
+	<?define MANUFACTURER_URL="https://github.com/ossbuild/" ?>
+	
+	<?define COMPANY_DIR_NAME="OSSBuild" ?>
+	<?define VERSION_DIR_NAME="v$(var.OSSBUILD_VERSION)" ?>
+	
+	<?define COPYRIGHT="Copyright (c) 2012 $(var.COMPANY_NAME). All rights reserved." ?>
+	
+	<?define LICENSE_LGPL="..\..\shared\licenses\lgpl.rtf" ?>
+	<?define LICENSE_URL_LGPL="http://www.gnu.org/licenses/lgpl-2.1.html" ?>
+
+	<?define REGISTRY_OSSBUILD_ROOT="SOFTWARE\OSSBuild\Alt" ?>
+
+	<?define REGISTRY_HKLM_OSSBUILD_ROOT="$(var.REGISTRY_OSSBUILD_ROOT)" ?>
+	<?define REGISTRY_HKCU_OSSBUILD_ROOT="$(var.REGISTRY_OSSBUILD_ROOT)" ?>
+	<?define REGISTRY_HKMU_OSSBUILD_ROOT="$(var.REGISTRY_OSSBUILD_ROOT)" ?>
+	
+	<?define REGISTRY_OSSBUILD_SHORTCUTS_KEY="$(var.REGISTRY_OSSBUILD_ROOT)\Shortcuts" ?>
+
+	<?define REGISTRY_OSSBUILD_VERSION_NAME="Version" ?>
+	<?define REGISTRY_OSSBUILD_INSTALL_DIR_NAME="InstallDir" ?>
+
+	<?define REGISTRY_OSSBUILD_BASIC_GIT_ENV_ROOT="$(var.REGISTRY_HKMU_OSSBUILD_ROOT)\Basic Git Environment" ?>
+	<?define REGISTRY_OSSBUILD_BASIC_GIT_ENV_SHORTCUTS_KEY="$(var.REGISTRY_OSSBUILD_BASIC_GIT_ENV_ROOT)\Shortcuts" ?>
+	<?define REGISTRY_OSSBUILD_BASIC_GIT_ENV_INSTALL_DIR_NAME="InstallDir" ?>
+
+	<?define GPL="-gpl" ?>
+	<?define LGPL="-lgpl" ?>
+	<?define PREFIX="-ossbuild-" ?>
+	<?define DEFAULT_LANGUAGE="1033" ?>
+	<?define MINIMAL_INSTALLER_VERSION="301" ?>
+	
+	<?define CURRENT_LANGUAGE="$(var.DEFAULT_LANGUAGE)" ?>
+	<?define SUPPORTED_LANGUAGES="$(var.DEFAULT_LANGUAGE)" ?>
+	
+	<?if $(var.Platform) = "x86" ?>
+		<?define PLATFORM_NAME="Win32" ?>
+	<?elseif $(var.Platform) = "x64" ?>
+		<?define PLATFORM_NAME="x64" ?>
+	<?else ?>
+		<?error Unknown or invalid platform defined ?>
+	<?endif ?>
+
+	<?define OSSBUILD_LOGO="..\..\shared\resources\logo-wix.png" ?>
+	<?define OSSBUILD_SPLASH="..\..\shared\resources\splash.png" ?>
+	
+	<?define OSSBUILD_ICON="..\..\shared\resources\icon.ico" ?>
+	<?define OSSBUILD_ICON_UP="..\..\shared\resources\up.ico" ?>
+	<?define OSSBUILD_ICON_NEW="..\..\shared\resources\new.ico" ?>
+	<?define OSSBUILD_ICON_WARNING="..\..\shared\resources\warning.ico" ?>
+	<?define OSSBUILD_ICON_INFORMATION="..\..\shared\resources\information.ico" ?>
+
+	<?define OSSBUILD_IMAGE_HEADER="..\..\shared\resources\header.bmp" ?>
+	<?define OSSBUILD_IMAGE_WELCOME="..\..\shared\resources\welcome.bmp" ?>
+	
+	<?define PACKAGES_DIR="..\packages" ?>
+	<?define PACKAGES_MSYS_DIR="$(var.PACKAGES_DIR)\msys" ?>
+	
+</Include>

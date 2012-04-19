@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	This sets up most of the installer properties that customize our package for 
+	our project. This includes the dialog icon, banner, welcome page image, 
+	fonts, contact info., etc.
+	
+	It also attempts to locate any registry entries that indicate where a current 
+	or previous installation is located and we update the INSTALLDIR variable 
+	accordingly.
+	
+	It sets up some default directories and adds some folders to the user's 
+	shortcuts.
+	
+	This is all to make the actual installer file very simplistic and ensures it 
+	focuses on what is truly unique about it. This file expects to be shared 
+	among multiple installers. So please exercise caution when editing it.
+-->
+
+<?include properties.wxi ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:OSSBuild="$(ossbuild.namespaceURI())">
+	<Fragment>
+		<ComponentGroup Id="OSSBuildCommon">
+			<ComponentRef Id="OSSBuildInstallDirCreate" />
+			<ComponentRef Id="OSSBuildShortcutsCreate" />
+
+			<ComponentRef Id="OSSBuildInstallRegistryWin32" />
+			<ComponentRef Id="OSSBuildInstallRegistryWin64" />
+			<ComponentRef Id="OSSBuildEnvironmentVariables" />
+
+			<ComponentRef Id="OSSBuildInstallHomeDirCreate" />
+			<ComponentRef Id="OSSBuildInstallSysDirCreate" />
+
+			<ComponentRef Id="OSSBuildInstallSysEtcProfileOssbuildDirCreate"/>
+		</ComponentGroup>
+
+		<Condition Message="This environment is only supported on Windows XP, Windows Vista, Windows 7, or higher.">
+			<![CDATA[Installed OR (VersionNT >= 501) OR (VersionNT64 >= 501)]]>
+		</Condition>
+
+		<Condition Message="You must be an administrator to install this application.">
+			<![CDATA[Privileged]]>
+		</Condition>
+
+		<!-- Add/Remove Programs -->
+		<Property Id="ARPPRODUCTICON" Value="MainIcon" />
+		<Property Id="ARPCONTACT" Value="$(var.MANUFACTURER)" />
+		<Property Id="ARPURLINFOABOUT" Value="$(var.MANUFACTURER_URL)" />
+		
+		<!-- Not needed if <Package InstallScope="perMachine" /> -->
+		<!-- <Property Id="ALLUSERS">1</Property> -->
+
+		<!-- Set application icon -->
+		<Icon Id="MainIcon" SourceFile="$(var.OSSBUILD_ICON)"/>
+
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.OSSBUILD_IMAGE_HEADER)" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.OSSBUILD_IMAGE_WELCOME)" />
+
+		<WixVariable Id="WixUIUpIco" Value="$(var.OSSBUILD_ICON_UP)" />
+		<WixVariable Id="WixUINewIco" Value="$(var.OSSBUILD_ICON_NEW)" />
+		<WixVariable Id="WixUIInfoIco" Value="$(var.OSSBUILD_ICON_INFORMATION)" />
+		<WixVariable Id="WixUIExclamationIco" Value="$(var.OSSBUILD_ICON_WARNING)" />
+
+		<WixVariable Id="WixUILicenseRtf" Value="..\..\shared\licenses\lgpl.rtf" />
+
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+		
+
+		<!-- Attempt to find where our normal install is located -->
+		<Property Id="REGISTRY_OSSBUILD_INSTALL_DIR_WIN32">
+			<RegistrySearch Id="RegOSSBuildInstallDirSearchWin32" Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Type="raw" Win64="no" />
+		</Property>
+
+		<Property Id="REGISTRY_OSSBUILD_INSTALL_DIR_WIN64">
+			<RegistrySearch Id="RegOSSBuildInstallDirSearchWin64" Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Type="raw" Win64="yes" />
+		</Property>
+
+		<!-- Initialize w/ the typical install dir -->
+		<CustomAction Id="SetOSSBuildInstallDir" Property="INSTALLDIR" Execute="firstSequence" Value="[WindowsVolume]$(var.COMPANY_DIR_NAME)\Git" />
+		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin32" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN32]" />
+		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin64" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN64]" />
+
+		<CustomAction Id="SetWixUIInstallDir" Property="WIXUI_INSTALLDIR" Execute="firstSequence" Value="INSTALLDIR" />
+
+		<!--
+		TODO: Test that this works in a commandline install
+		<InstallExecuteSequence>
+			<Custom Action="SetOSSBuildInstallDirFromRegistry" Before="SetGstInstallDir"><![CDATA[REGISTRY_OSSBUILD_INSTALL_DIR]]></Custom>
+			<Custom Action="SetOSSBuildInstallDir" Before="CostFinalize"><![CDATA[NOT REGISTRY_OSSBUILD_INSTALL_DIR]]></Custom>
+		</InstallExecuteSequence>
+		-->
+		
+		<InstallUISequence>
+			<Custom Action="SetOSSBuildInstallDirFromRegistryWin32" Before="SetOSSBuildInstallDirFromRegistryWin64"><![CDATA[REGISTRY_OSSBUILD_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="SetOSSBuildInstallDirFromRegistryWin64" Before="SetOSSBuildInstallDir"><![CDATA[NOT REGISTRY_OSSBUILD_INSTALL_DIR_WIN32]]></Custom>
+			<Custom Action="SetOSSBuildInstallDir" Before="SetWixUIInstallDir"><![CDATA[NOT (REGISTRY_OSSBUILD_INSTALL_DIR_WIN32 OR REGISTRY_OSSBUILD_INSTALL_DIR_WIN64)]]></Custom>
+			<Custom Action="SetWixUIInstallDir" Before="CostInitialize" />
+		</InstallUISequence>
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="INSTALLDIR" Name=".">
+
+					<Component Id="Empty" Guid="{57D8A04F-619A-4F81-AB26-D4789AC04B4E}">
+						<CreateFolder />
+						<RemoveFolder Id="Empty" On="uninstall" />
+					</Component>
+					
+					<!-- C:\OSSBuild\Git\ -->
+					<Directory Id="OSSBuildInstallDir" Name=".">
+						<Directory Id="OSSBUILD_INSTALL_DIR" Name=".">
+
+							<Component Id="OSSBuildInstallDirCreate" Guid="{2749D2F0-4E5E-4A2E-8409-EEDB1E2CBA6B}">
+								<CreateFolder />
+								<RemoveFolder Id="OSSBuildInstallDirRemove" On="uninstall" />
+							</Component>
+
+							<!-- Register environment variables. -->
+							<Component Id="OSSBuildEnvironmentVariables" Guid="{58CB9B98-A26C-4BCD-8BFD-CA2813277DC7}">
+								<CreateFolder />
+								<RemoveFolder Id="InstallDirRemove" On="uninstall" />
+
+								<Environment Id="OSSBuildPath" Action="set" Part="first" Name="PATH" Permanent="no" System="yes" Value="[OSSBUILD_INSTALL_PKG_SYS_BIN_DIR]" />
+								<Environment Id="OSSBuildDir" Action="set" Part="first" Name="OSSBUILD_DIR" Permanent="no" System="yes" Value="[INSTALLDIR]" />
+							</Component>
+
+							<!-- Set registry entries indicating where it's been installed. -->
+							<Component Id="OSSBuildInstallRegistryWin32" Guid="{7D22A0F4-9AD4-4237-86B8-E704B9A0D325}" Win64="no">
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
+							</Component>
+
+							<Component Id="OSSBuildInstallRegistryWin64" Guid="{4B420237-DDC4-4CF8-A654-B57CFAF54FFD}" Win64="yes">
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_VERSION_NAME)" Value="$(var.OSSBUILD_VERSION_FULL)" Type="string" Action="write" />
+								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
+							</Component>
+
+							<!-- C:\OSSBuild\Git\home\ -->
+							<Directory Id="OSSBuildInstallHomeDir" Name="home">
+								<Component Id="OSSBuildInstallHomeDirCreate" Guid="{70FD1FE4-5911-4491-9C1F-0FB1D4CC6BBC}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallHomeDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+
+							<!-- C:\OSSBuild\Git\sys\ -->
+							<Directory Id="OSSBuildInstallSysDir" Name="sys">
+								<Component Id="OSSBuildInstallSysDirCreate" Guid="{B01C0B70-B601-4CB6-8B41-C6C09F2EEB9D}">
+									<CreateFolder />
+									<RemoveFolder Id="OSSBuildInstallSysDirRemove" On="uninstall" />
+								</Component>
+							</Directory>
+							
+						</Directory>
+					</Directory>
+				</Directory>
+
+				<Directory Id="ProgramMenuFolder" Name="Programs">
+					
+					<!-- <Start Menu>\Git Environment\ -->
+					<Directory Id="OSSBuildShortcutsDir" Name="Git Environment">
+						
+						<Component Id="OSSBuildShortcutsCreate" Guid="{654015C9-7EC3-4E7A-B23B-3C681271300E}">
+							<CreateFolder />
+							<RemoveFolder Id="OSSBuildShortcutsDirRemove" On="uninstall" />
+							<RegistryValue Root="HKMU" Key="$(var.REGISTRY_OSSBUILD_BASIC_GIT_ENV_SHORTCUTS_KEY)" Name="Tools" Type="string" Value="" KeyPath="yes" />
+						</Component>
+						
+					</Directory>
+					
+				</Directory>
+				
+			</Directory>
+			
+		</Directory>
+
+		<!-- C:\OSSBuild\Git\sys\etc\profile.d\ -->
+		<DirectoryRef Id="OSSBuildInstallSysEtcProfileDir">
+			
+			<!-- C:\OSSBuild\Git\sys\etc\profile.d\ossbuild\ -->
+			<Directory Id="OSSBuildInstallSysEtcProfileOssbuildDir" Name="ossbuild">
+				<Component Id="OSSBuildInstallSysEtcProfileOssbuildDirCreate" Guid="{1156FD5E-706B-471D-A008-6A874B93C10F}">
+					<CreateFolder />
+					<RemoveFolder Id="OSSBuildInstallSysEtcProfileOssbuildDirRemove" On="uninstall" />
+				</Component>
+			</Directory>
+			
+		</DirectoryRef>
+		
+	</Fragment>
+</Wix>
