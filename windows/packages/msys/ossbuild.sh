@@ -53,6 +53,9 @@ fi
 #Set intltool's perl
 export INTLTOOL_PERL=/opt/strawberry-perl/perl/bin/perl
 
+#If ruby is installed, ensure that it's in the system path.
+test -d /opt/ruby/bin/ && export PATH=$PATH:/opt/ruby/bin
+
 #Execute ossbuild scripts (e.g. setup ms tool environment).
 for i in /etc/profile.d/ossbuild/*.sh ; do
 	if [ -f $i ]; then

@@ -33,7 +33,7 @@ cd /d "%DIR%"
 
 
 echo Using WiX heat.exe to generate Ruby installer output...
-%HEAT% dir "%RUBYDIR%" -sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment -dr OSSBuildInstallMinGWDir -var var.RUBY_DIR -t ruby.xslt -cg OSSBuildBuildEnvRuby -out "%DIR%\ruby.wxs"
+%HEAT% dir "%RUBYDIR%" -sw5150 -nologo -ag -sreg -scom -svb6 -sfrag -template fragment -dr OSSBuildInstallOptDir -var var.RUBY_DIR -t ruby.xslt -cg OSSBuildBuildEnvRuby -out "%DIR%\ruby.wxs"
 
 
 

@@ -88,7 +88,7 @@
 		</Property>
 
 		<!-- Initialize w/ the typical install dir -->
-		<CustomAction Id="SetOSSBuildInstallDir" Property="INSTALLDIR" Execute="firstSequence" Value="[WindowsVolume]$(var.COMPANY_DIR_NAME)" />
+		<CustomAction Id="SetOSSBuildInstallDir" Property="INSTALLDIR" Execute="firstSequence" Value="[WindowsVolume]$(var.COMPANY_DIR_NAME)\$(var.VERSION_DIR_NAME)" />
 		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin32" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN32]" />
 		<CustomAction Id="SetOSSBuildInstallDirFromRegistryWin64" Property="INSTALLDIR" Execute="firstSequence" Value="[REGISTRY_OSSBUILD_INSTALL_DIR_WIN64]" />
 
@@ -118,7 +118,7 @@
 						<RemoveFolder Id="Empty" On="uninstall" />
 					</Component>
 					
-					<!-- C:\OSSBuild\ -->
+					<!-- C:\OSSBuild\v<Version>\ -->
 					<Directory Id="OSSBuildInstallDir" Name=".">
 						<Directory Id="OSSBUILD_INSTALL_DIR" Name=".">
 
@@ -147,7 +147,7 @@
 								<RegistryValue Root="HKLM" Key="$(var.REGISTRY_HKLM_OSSBUILD_ROOT)" Name="$(var.REGISTRY_OSSBUILD_INSTALL_DIR_NAME)" Value="[INSTALLDIR]" Type="string" Action="write" KeyPath="yes" />
 							</Component>
 
-							<!-- C:\OSSBuild\home\ -->
+							<!-- C:\OSSBuild\v<Version>\home\ -->
 							<Directory Id="OSSBuildInstallHomeDir" Name="home">
 								<Component Id="OSSBuildInstallHomeDirCreate" Guid="{40C4D5FA-E027-4615-883F-568EA2C446DE}">
 									<CreateFolder />
@@ -155,7 +155,7 @@
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\sys\ -->
+							<!-- C:\OSSBuild\v<Version>\sys\ -->
 							<Directory Id="OSSBuildInstallSysDir" Name="sys">
 								<Component Id="OSSBuildInstallSysDirCreate" Guid="{6CF49753-2E5E-49FD-8B82-47B8DF92EB78}">
 									<CreateFolder />
@@ -163,7 +163,7 @@
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\build\ -->
+							<!-- C:\OSSBuild\v<Version>\build\ -->
 							<Directory Id="OSSBuildInstallBuildDir" Name="build">
 								<Component Id="OSSBuildInstallBuildDirCreate" Guid="{31389CF8-0FEB-4ED7-8E06-7AF02A8B5DB4}">
 									<CreateFolder />
@@ -171,14 +171,14 @@
 								</Component>
 							</Directory>
 
-							<!-- C:\OSSBuild\pkg\ -->
+							<!-- C:\OSSBuild\v<Version>\pkg\ -->
 							<Directory Id="OSSBuildInstallPkgDir" Name="pkg">
 								<Component Id="OSSBuildInstallPkgDirCreate" Guid="{B3283553-B9EA-4D38-AA50-C10615584E01}">
 									<CreateFolder />
 									<RemoveFolder Id="OSSBuildInstallPkgDirRemove" On="uninstall" />
 								</Component>
 
-								<!-- C:\OSSBuild\pkg\reg\ -->
+								<!-- C:\OSSBuild\v<Version>\pkg\reg\ -->
 								<Directory Id="OSSBuildInstallPkgRegDir" Name="reg">
 									<Component Id="OSSBuildInstallPkgRegDirCreate" Guid="{F624D904-38EC-41C6-B457-6DE1C73C093B}">
 										<CreateFolder />
@@ -186,14 +186,14 @@
 									</Component>
 								</Directory>
 
-								<!-- C:\OSSBuild\pkg\sys\ -->
+								<!-- C:\OSSBuild\v<Version>\pkg\sys\ -->
 								<Directory Id="OSSBuildInstallPkgSysDir" Name="sys">
 									<Component Id="OSSBuildInstallPkgSysDirCreate" Guid="{1A404A92-468E-4368-B362-930E5E54DB41}">
 										<CreateFolder />
 										<RemoveFolder Id="OSSBuildInstallPkgSysDirRemove" On="uninstall" />
 									</Component>
 
-									<!-- C:\OSSBuild\pkg\sys\bin\ -->
+									<!-- C:\OSSBuild\v<Version>\pkg\sys\bin\ -->
 									<Directory Id="OSSBuildInstallPkgSysBinDir" Name="bin">
 										<Directory Id="OSSBUILD_INSTALL_PKG_SYS_BIN_DIR" Name=".">
 											<Component Id="OSSBuildInstallPkgSysBinDirCreate" Guid="{E04A4F4E-76C6-4035-B2BF-A7F3845F589F}">
@@ -204,14 +204,14 @@
 									</Directory>
 								</Directory>
 
-								<!-- C:\OSSBuild\pkg\dev\ -->
+								<!-- C:\OSSBuild\v<Version>\pkg\dev\ -->
 								<Directory Id="OSSBuildInstallPkgDevDir" Name="dev">
 									<Component Id="OSSBuildInstallPkgDevDirCreate" Guid="{9F5B9EF4-D632-4C4F-B418-61EEEDF6ECDF}">
 										<CreateFolder />
 										<RemoveFolder Id="OSSBuildInstallPkgDevDirRemove" On="uninstall" />
 									</Component>
 
-									<!-- C:\OSSBuild\pkg\dev\msi\ -->
+									<!-- C:\OSSBuild\v<Version>\pkg\dev\msi\ -->
 									<Directory Id="OSSBuildInstallPkgDevMsiDir" Name="msi">
 										<Component Id="OSSBuildInstallPkgDevMsiDirCreate" Guid="{1856CCBB-3786-4396-B816-1565D5AC342E}">
 											<CreateFolder />
@@ -219,7 +219,7 @@
 										</Component>
 									</Directory>
 
-									<!-- C:\OSSBuild\pkg\dev\include\ -->
+									<!-- C:\OSSBuild\v<Version>\pkg\dev\include\ -->
 									<Directory Id="OSSBuildInstallPkgDevIncludeDir" Name="include">
 										<Component Id="OSSBuildInstallPkgDevIncludeDirCreate" Guid="{E98DC213-6E05-4B8E-BC58-109685CC687B}">
 											<CreateFolder />
@@ -227,7 +227,7 @@
 										</Component>
 									</Directory>
 
-									<!-- C:\OSSBuild\pkg\dev\lib\ -->
+									<!-- C:\OSSBuild\v<Version>\pkg\dev\lib\ -->
 									<Directory Id="OSSBuildInstallPkgDevLibDir" Name="lib">
 										<Component Id="OSSBuildInstallPkgDevLibDirCreate" Guid="{77C5C07D-FDF4-48FF-8D74-FC11D6F0CEF6}">
 											<CreateFolder />
@@ -235,7 +235,7 @@
 										</Component>
 									</Directory>
 
-									<!-- C:\OSSBuild\pkg\dev\src\ -->
+									<!-- C:\OSSBuild\v<Version>\pkg\dev\src\ -->
 									<Directory Id="OSSBuildInstallPkgDevSrcDir" Name="src">
 										<Component Id="OSSBuildInstallPkgDevSrcDirCreate" Guid="{AF647E81-21D9-494B-A73A-595F569585AC}">
 											<CreateFolder />
@@ -277,10 +277,10 @@
 			
 		</Directory>
 
-		<!-- C:\OSSBuild\sys\etc\profile.d\ -->
+		<!-- C:\OSSBuild\v<Version>\sys\etc\profile.d\ -->
 		<DirectoryRef Id="OSSBuildInstallSysEtcProfileDir">
 			
-			<!-- C:\OSSBuild\sys\etc\profile.d\ossbuild\ -->
+			<!-- C:\OSSBuild\v<Version>\sys\etc\profile.d\ossbuild\ -->
 			<Directory Id="OSSBuildInstallSysEtcProfileOssbuildDir" Name="ossbuild">
 				<Component Id="OSSBuildInstallSysEtcProfileOssbuildDirCreate" Guid="{AE08368E-3936-4D57-807D-E4E8EFDD822A}">
 					<CreateFolder />

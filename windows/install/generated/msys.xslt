@@ -48,6 +48,11 @@
 	<xsl:template match="wix:DirectoryRef[@Id='OSSBuildInstallSysDir']/wix:Directory[@Name='msys']/wix:Directory[@Name='mingw']/@Id">
 		<xsl:attribute name="Id">OSSBuildInstallMinGWDir</xsl:attribute>
 	</xsl:template>
+
+	<!-- Change the msys /opt/ directory id to something that can be referenced elsewhere -->
+	<xsl:template match="wix:DirectoryRef[@Id='OSSBuildInstallSysDir']/wix:Directory[@Name='msys']/wix:Directory[@Name='opt']/@Id">
+		<xsl:attribute name="Id">OSSBuildInstallOptDir</xsl:attribute>
+	</xsl:template>
 	
 	<!-- Remove the msys /etc/profile.d/ossbuild/ directory -->
 	<xsl:template match="wix:Directory[@Name='etc']/wix:Directory[@Name='profile.d']/wix:Directory[@Name='ossbuild']" />

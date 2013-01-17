@@ -8,7 +8,7 @@ that they are accessible through most firewalls.
 LGPL Packages
 -------------------------------------
 
-perl                    -       5.12.3.0        -       http://strawberryperl.com/download/5.12.3.0/strawberry-perl-5.12.3.0-portable.zip
+perl                    -       5.16.2.1        -       http://strawberryperl.com/download/5.16.2.1/strawberry-perl-5.16.2.1-32bit-portable.zip
 
 
 

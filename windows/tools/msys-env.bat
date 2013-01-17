@@ -112,9 +112,9 @@ attrib +H "%DEST_MSYS_DIR%\.gitignore"
 
 
 
-set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/mingw-get-0.4-mingw32-alpha-1-bin.tar.xz?use_mirror=voxel
-set PKG_MINGWGET_LIC=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/mingw-get-0.4-mingw32-alpha-1-lic.tar.xz?use_mirror=voxel
-set PKG_MINGWGETPKGINFO_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.4-alpha-1/pkginfo-0.4-mingw32-alpha-1-bin.tar.xz?use_mirror=voxel
+set PKG_MINGWGET_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.5-beta-20120426-1/mingw-get-0.5-mingw32-beta-20120426-1-bin.tar.xz?use_mirror=voxel
+set PKG_MINGWGET_LIC=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.5-beta-20120426-1/mingw-get-0.5-mingw32-beta-20120426-1-lic.tar.xz?use_mirror=voxel
+set PKG_MINGWGETPKGINFO_BIN=http://downloads.sourceforge.net/project/mingw/Installer/mingw-get/mingw-get-0.5-beta-20120426-1/pkginfo-0.5-mingw32-beta-20120426-1-bin.tar.xz?use_mirror=iweb
 set PKG_MINGW_PEXPORTS_BIN=http://downloads.sourceforge.net/project/mingw/MinGW/Extension/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-bin.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_DOC=http://downloads.sourceforge.net/project/mingw/MinGW/Extension/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-doc.tar.lzma?use_mirror=voxel
 set PKG_MINGW_PEXPORTS_LIC=http://downloads.sourceforge.net/project/mingw/MinGW/Extension/pexports/pexports-0.44-1/pexports-0.44-1-mingw32-lic.tar.lzma?use_mirror=voxel
@@ -128,15 +128,16 @@ set PKG_MSYS_FLIP_BIN=https://ccrma.stanford.edu/~craig/utility/flip/flip.exe
 
 set PKG_SYSINTERNALS_JUNCTION_BIN=http://download.sysinternals.com/files/Junction.zip
 
-set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.7.9-preview20120201.7z
-set PKG_STRAWBERRY_PERL_BIN=http://strawberry-perl.googlecode.com/files/strawberry-perl-5.14.2.1-32bit-portable.zip
+set PKG_MSYSGIT_BIN=http://msysgit.googlecode.com/files/PortableGit-1.8.0-preview20121022.7z
+set PKG_STRAWBERRY_PERL_BIN=http://strawberryperl.com/download/5.16.2.1/strawberry-perl-5.16.2.1-32bit-portable.zip
 
-set PKG_SUBVERSION_BIN=http://alagazam.net/svn-1.7.3/svn-win32-1.7.3.zip
+
+set PKG_SUBVERSION_BIN=http://sourceforge.net/projects/win32svn/files/1.7.8/apache22/svn-win32-1.7.8.zip
 
 
 rem See http://rubyinstaller.org/downloads/
-set PKG_RUBY_BIN=http://rubyforge.org/frs/download.php/75849/ruby-1.9.3-p125-i386-mingw32.7z
-set PKG_RUBY_BIN_DIR=ruby-1.9.3-p125-i386-mingw32
+set PKG_RUBY_BIN=http://rubyforge.org/frs/download.php/76643/ruby-1.9.3-p362-i386-mingw32.7z
+set PKG_RUBY_BIN_DIR=ruby-1.9.3-p362-i386-mingw32
 
 set PKG_OSSBUILD_W64_GCC_X86_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86-ossbuild-bin-r164692.tar.lzma
 set PKG_OSSBUILD_W64_GCC_X86_64_BIN=http://ossbuild.googlecode.com/files/mingw-w64-x86_64-ossbuild-bin-r164692.tar.lzma
@@ -427,6 +428,15 @@ set filename=%~1
 set currdirectory=%CD%
 cd /d "%TMPDIR%"
 del %filename%.tar.lzma
+cd /d "%currdirectory%"
+endlocal&goto :EOF
+
+:clean_xz %filename%
+setlocal ENABLEEXTENSIONS
+set filename=%~1
+set currdirectory=%CD%
+cd /d "%TMPDIR%"
+del %filename%.tar.xz
 cd /d "%currdirectory%"
 endlocal&goto :EOF
 

@@ -91,12 +91,12 @@
 			<ComponentRef Id="OSSBuildInstallerTools" />
 		</ComponentGroup>
 
-		<!-- C:\OSSBuild\sys\ -->
+		<!-- C:\OSSBuild\v<Version>\sys\ -->
 		<DirectoryRef Id="OSSBuildInstallSysDir">
 			<!-- Fill in any files we'll need -->
 		</DirectoryRef>
 
-		<!-- C:\OSSBuild\sys\etc\profile.d\ossbuild\ -->
+		<!-- C:\OSSBuild\v<Version>\sys\etc\profile.d\ossbuild\ -->
 		<DirectoryRef Id="OSSBuildInstallSysEtcProfileOssbuildDir">
 			<Component Id="OSSBuildMicrosoftTools">
 				<File Id="OSSBuildMicrosoftToolsShellScript" KeyPath="yes" Source="$(var.PACKAGES_MSYS_DIR)\ossbuild\ms-tools.sh" DiskId="1" />

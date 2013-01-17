@@ -12,7 +12,7 @@
 	<?define COMPANY_DIR_NAME="OSSBuild" ?>
 	<?define VERSION_DIR_NAME="v$(var.OSSBUILD_VERSION)" ?>
 	
-	<?define COPYRIGHT="Copyright (c) 2011 $(var.COMPANY_NAME). All rights reserved." ?>
+	<?define COPYRIGHT="Copyright (c) 2011-2013 $(var.COMPANY_NAME). All rights reserved." ?>
 	
 	<?define LICENSE_LGPL="..\..\shared\licenses\lgpl.rtf" ?>
 	<?define LICENSE_URL_LGPL="http://www.gnu.org/licenses/lgpl-2.1.html" ?>
